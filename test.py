@@ -16,7 +16,8 @@ print(df.loc[172000, 'Datetime'].month - df.loc[1, 'Datetime'].month)
 
 print('------')
 print(df['Datetime'][172000])
-df.loc[172000, 'Datetime'] = df.loc[172000, 'Datetime'].replace(year=2002)
+print(df.loc[1, 'Datetime'].year)
+df.loc[172000, 'Datetime'] = df.loc[172000, 'Datetime'].replace(year=df.loc[1, 'Datetime'].year)
 print(df['Datetime'][172000])
 print('------')
 
