@@ -1,29 +1,32 @@
 import pandas as pd
+import numpy as np
 
-df = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen.csv', delimiter=';')
+df = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen ubehandlet.csv', delimiter=';')
 
 df['Datetime'] = pd.to_datetime(df['Date.Time'], format='%d/%m/%Y %H:%M')
+df['Data set'] = ""
 print(df.head())
 
-df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/NIBIO_Telespor_lamsøye.csv', delimiter=';',
-                  encoding='latin-1')
+# df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/NIBIO_Telespor_lamsøye.csv', delimiter=';',
+#                  encoding='latin-1')
 
-df2['uniq.log'] = df2['Telespor_id'].astype(str) + '_' + df2['yr'].astype(str)
-df2['uniq.log_mor'] = df2['M_Telespor_id'].astype(str) + '_' + df2['yr'].astype(str)
-print(df2.head())
+# df2['uniq.log'] = df2['Telespor_id'].astype(str) + '_' + df2['yr'].astype(str)
+# df2['uniq.log_mor'] = df2['M_Telespor_id'].astype(str) + '_' + df2['yr'].astype(str)
 
-# neste er å sette inn ny rad med en NaT foran hver gang et nytt datasett starter
 
 sett = []
 i = 0
 while i < len(df):
     if df.at[i, 'uniq.log'] not in sett:
         sett.append(df.at[i, 'uniq.log'])
-        # sett inn ny rad og putt den inn med en NaT, eller en 'new_sheep', på datetime
+        new_line = pd.DataFrame({'insert': np.nan}, index=[i])
+        df = pd.concat([df.iloc[:i], new_line, df.iloc[i:]]).reset_index(drop=True)
+        df.at[i, 'Data set'] = 'new_sheep'
+        df = df.drop(columns='insert')
     i += 1
-
-
-
+    if (i % 10000) == 0:
+        # check progress against number of iterations
+        print("Reached number: ", i)
 
 
 def count(df):
@@ -35,7 +38,7 @@ def count(df):
         i += 1
     return sett
 
-
+"""
 sett1 = count(df)
 sett2 = count(df2)
 i = 0
@@ -59,7 +62,8 @@ for i in range(len(sett2)):
         count1 += 1
 print(count2)
 print(count1)
-
-
+"""
 # sett 1 = Samlet data Fosen med alle faktiske datasettene med punkter
 # sett 2 er infosiden med info om hver sau og hvert sett
+
+#df.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen uten timeclean.csv', index=False, sep=';')
