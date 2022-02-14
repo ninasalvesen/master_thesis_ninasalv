@@ -91,10 +91,10 @@ def TimeClean(df, delta):
 df1, count1 = TimeClean(df1, 2)
 print(count1)
 df1 = df1.drop(columns=['Date', 'Time'])  # deleting the (uncleaned) columns that we no longer need
-df1.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll1.csv', index=False, sep=';')
+df1.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll.csv', index=False, sep=';')
 
 df2, count2 = TimeClean(df2, 4)
 print(count2)
 df2 = df2.drop(columns=['Date.Time'])
-df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen1.csv', index=False, sep=';')
+df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen.csv', index=False, sep=';')
 
