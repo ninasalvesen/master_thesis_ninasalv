@@ -1,9 +1,13 @@
 import pandas as pd
 import math
 
-df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen uten pointclean.csv',
+df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen uten pointclean V2.csv',
                   delimiter=';')
 df2['Datetime'] = pd.to_datetime(df2['Datetime'], format='%Y-%m-%d %H:%M:%S')
+
+df3 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen.csv',
+                  delimiter=';')
+df3['Datetime'] = pd.to_datetime(df2['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
 
 def zeros(df):  # remover all zeros at beginning and end of sets
@@ -73,11 +77,11 @@ def impute(df):  # imputes average points where there are zeros
                     df.at[temp - n, 'Lon'] = (df.at[temp - n - 1, 'Lon'] + df.at[temp, 'Lon']) / 2
                 df.at[i, 'Lat'] = (df.at[i - 1, 'Lat'] + df.at[i + 1, 'Lat']) / 2
                 df.at[i, 'Lon'] = (df.at[i - 1, 'Lon'] + df.at[i + 1, 'Lon']) / 2
-            if n == 2:
-                df.at[i, 'Lat'] = (df.at[i - 1, 'Lat'] + df.at[temp + 1, 'Lat']) / 2
-                df.at[i, 'Lon'] = (df.at[i - 1, 'Lon'] + df.at[temp + 1, 'Lon']) / 2
-                df.at[i + 1, 'Lat'] = (df.at[i, 'Lat'] + df.at[temp + 1, 'Lat']) / 2
-                df.at[i + 1, 'Lon'] = (df.at[i, 'Lon'] + df.at[temp + 1, 'Lon']) / 2
+            elif n == 2:
+                df.at[i, 'Lat'] = (df.at[i - 1, 'Lat'] + df.at[temp, 'Lat']) / 2
+                df.at[i, 'Lon'] = (df.at[i - 1, 'Lon'] + df.at[temp, 'Lon']) / 2
+                df.at[i + 1, 'Lat'] = (df.at[i, 'Lat'] + df.at[temp, 'Lat']) / 2
+                df.at[i + 1, 'Lon'] = (df.at[i, 'Lon'] + df.at[temp, 'Lon']) / 2
         if n % 2 != 0:
             if n >= 3:
                 n = math.floor(n / 2)
@@ -90,13 +94,13 @@ def impute(df):  # imputes average points where there are zeros
                     df.at[temp - n - 1, 'Lat'] = (df.at[temp - n - 2, 'Lat'] + df.at[temp, 'Lat']) / 2
                     df.at[temp - n - 1, 'Lon'] = (df.at[temp - n - 2, 'Lon'] + df.at[temp, 'Lon']) / 2
             else:
-                df.at[i, 'Lat'] = (df.at[i - 1, 'Lat'] + df.at[i + 1, 'Lat']) / 2
-                df.at[i, 'Lon'] = (df.at[i - 1, 'Lon'] + df.at[i + 1, 'Lon']) / 2
+                df.at[i, 'Lat'] = (df.at[i - 1, 'Lat'] + df.at[i, 'Lat']) / 2
+                df.at[i, 'Lon'] = (df.at[i - 1, 'Lon'] + df.at[i, 'Lon']) / 2
         i += 1
     return df
 
 
-df2 = zeros(df2)
 df2 = remove(df2)
+df2 = zeros(df2)
 df2 = impute(df2)
 df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen.csv', index=False, sep=';')
