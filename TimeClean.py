@@ -1,9 +1,9 @@
 import pandas as pd
 
-df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll uten timeclean.csv', delimiter=';',
+df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V1 uten timeclean.csv', delimiter=';',
                  dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
 
-df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen uten timeclean.csv', delimiter=';')
+df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V1 uten timeclean.csv', delimiter=';')
 
 df1['Datetime'] = df1['Date'] + " " + df1['Time']
 df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
@@ -88,13 +88,31 @@ def TimeClean(df, delta):
     return df, count
 
 
+def EqualTimeError(df):
+    i = 0
+    while i < len(df):
+        if pd.isnull(df1.at[i, 'Datetime']):
+            i += 2
+            continue
+
+        time = ((df.at[i, 'Datetime'] - df.at[i - 1, 'Datetime']).total_seconds() / (60 * 60))  # in hour(s)
+        if time == 0:
+            print(i)
+            print(df.at[i, 'Datetime'])
+            df = df.drop(df.index[i])
+            df.reset_index(inplace=True, drop=True)
+            continue
+        i += 1
+    return df
+
+
 df1, count1 = TimeClean(df1, 2)
 print(count1)
+df1 = EqualTimeError(df1)
 df1 = df1.drop(columns=['Date', 'Time'])  # deleting the (uncleaned) columns that we no longer need
-df1.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll.csv', index=False, sep=';')
+df1.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V2 med timeclean.csv', index=False, sep=';')
 
 df2, count2 = TimeClean(df2, 4)
 print(count2)
 df2 = df2.drop(columns=['Date.Time'])
-df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen.csv', index=False, sep=';')
-
+df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V2 uten pointclean.csv', index=False, sep=';')
