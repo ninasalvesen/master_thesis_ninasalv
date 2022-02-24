@@ -53,12 +53,13 @@ def DateActivity(df):
     return date_range, activity
 
 
-dates, act = DateActivity(df1)
-dates2, act2 = DateActivity(df2)
+dates1, activity1 = DateActivity(df1)
+dates2, activity2 = DateActivity(df2)
+
 
 # Plot of activity per date in Tingvoll
 fig1, ax1 = plt.subplots(figsize=(16, 8))
-plt.bar(x=dates, height=act)
+plt.bar(x=dates1, height=activity1)
 ax1.set_xlabel(' ', fontsize=1)
 ax1.set_ylabel('Velocity, m/hr', fontsize=35, labelpad=30)
 ax1.set_title('Mean activity per date in Tingvoll', fontsize=40, pad=30)
@@ -67,19 +68,17 @@ plt.yticks(fontsize=25)
 plt.tight_layout()
 date_form = DateFormatter("%d.%m")
 ax1.xaxis.set_major_formatter(date_form)
-ax1.xaxis.set_major_locator(mdates.MonthLocator())
+
 
 # Plot of activity per date in Fosen
 fig2, ax2 = plt.subplots(figsize=(16, 8))
-plt.bar(x=dates2, height=act2)
+plt.bar(x=dates2, height=activity2)
 ax2.set_xlabel(' ', fontsize=1)
 ax2.set_ylabel('Velocity, m/hr', fontsize=35, labelpad=30)
 ax2.set_title('Mean activity per date in Fosen', fontsize=40, pad=30)
 plt.xticks(fontsize=25)
 plt.yticks(fontsize=25)
 plt.tight_layout()
-date_form = DateFormatter("%d.%m")
 ax2.xaxis.set_major_formatter(date_form)
-ax2.xaxis.set_major_locator(mdates.MonthLocator())
 
 plt.show()
