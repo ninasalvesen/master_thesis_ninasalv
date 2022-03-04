@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 from matplotlib.dates import DateFormatter
-import matplotlib.dates as mdates
 
 sns.set_style('darkgrid')
 
@@ -17,9 +16,6 @@ df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%d/%m/%Y %H:%M')
 df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V4 med Haversine.csv',
                   delimiter=';')
 df2['Datetime'] = pd.to_datetime(df2['Datetime'], format='%Y-%m-%d %H:%M:%S')
-
-#print(df1.head())
-#print(df2.head())
 
 
 def FindExtremeDates(df):
@@ -92,14 +88,8 @@ def DateActivityPerYear(df, year):
     return date_range, activity
 
 
-dates2_2018, activity2_2018 = DateActivityPerYear(df2, 2018)
-dates2_2019, activity2_2019 = DateActivityPerYear(df2, 2019)
-dates2_2020, activity2_2020 = DateActivityPerYear(df2, 2020)
-
-"""
 dates1, activity1 = DateActivity(df1)
 dates2, activity2 = DateActivity(df2)
-
 
 # Plot of activity per date in Tingvoll
 fig1, ax1 = plt.subplots(figsize=(16, 8))
@@ -124,32 +114,102 @@ plt.xticks(fontsize=25)
 plt.yticks(fontsize=25)
 plt.tight_layout()
 ax2.xaxis.set_major_formatter(date_form)
-"""
 
-fig3, (ax3, ax4, ax5) = plt.subplots(3, 1, figsize=(14, 10))
+
+dates2_2018, activity2_2018 = DateActivityPerYear(df2, 2018)
+dates2_2019, activity2_2019 = DateActivityPerYear(df2, 2019)
+dates2_2020, activity2_2020 = DateActivityPerYear(df2, 2020)
+
+# Figure of activity plots for all years and total in Fosen
+fig3, ((ax3, ax4), (ax5, ax6)) = plt.subplots(2, 2, figsize=(14, 10))
 ax3.bar(x=dates2_2018, height=activity2_2018)
-ax3.set_title('2018', fontsize=20)
-ax3.tick_params(axis='x', labelsize=15)
-ax3.tick_params(axis='y', labelsize=15)
+ax3.set_title('2018', fontsize=18)
+ax3.tick_params(axis='x', labelsize=12)
+ax3.tick_params(axis='y', labelsize=12)
 ax3.set(ylim=(0, 285))
 date_form = DateFormatter('%d.%m')
 ax3.xaxis.set_major_formatter(date_form)
 
 ax4.bar(x=dates2_2019, height=activity2_2019)
-ax4.set_title('2019', fontsize=20)
-ax4.tick_params(axis='x', labelsize=15)
-ax4.tick_params(axis='y', labelsize=15)
+ax4.set_title('2019', fontsize=18)
+ax4.tick_params(axis='x', labelsize=12)
+ax4.tick_params(axis='y', labelsize=12)
 ax4.set(ylim=(0, 285))
 ax4.xaxis.set_major_formatter(date_form)
 
 ax5.bar(x=dates2_2020, height=activity2_2020)
-ax5.set_title('2020', fontsize=20)
-ax5.tick_params(axis='x', labelsize=15)
-ax5.tick_params(axis='y', labelsize=15)
+ax5.set_title('2020', fontsize=18)
+ax5.tick_params(axis='x', labelsize=12)
+ax5.tick_params(axis='y', labelsize=12)
 ax5.set(ylim=(0, 285))
 ax5.xaxis.set_major_formatter(date_form)
 
-fig3.suptitle('Mean activity per year in Fosen in m/hr per date', fontsize=35)
+ax6.xaxis.set_major_formatter(date_form)
+ax6.bar(x=dates2, height=activity2)
+ax6.set_title('Mean total', fontsize=18)
+ax6.tick_params(axis='x', labelsize=12)
+ax6.tick_params(axis='y', labelsize=12)
+ax6.set(ylim=(0, 285))
+ax6.xaxis.set_major_formatter(date_form)
+
+fig3.suptitle('Mean activity per year in Fosen in m/hr per date', fontsize=30)
 plt.tight_layout()
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/mean_activity_per_date_Fosen_b4_cut.png", dpi=500)
+
+
+dates1_2012, activity1_2012 = DateActivityPerYear(df1, 2012)
+dates1_2013, activity1_2013 = DateActivityPerYear(df1, 2013)
+dates1_2014, activity1_2014 = DateActivityPerYear(df1, 2014)
+dates1_2015, activity1_2015 = DateActivityPerYear(df1, 2015)
+dates1_2016, activity1_2016 = DateActivityPerYear(df1, 2016)
+
+# Figure of activity plots for all years and total in Tingvoll
+fig4, ((ax7, ax8), (ax9, ax10), (ax11, ax12)) = plt.subplots(3, 2, figsize=(14, 10))
+ax7.bar(x=dates1_2012, height=activity1_2012)
+ax7.set_title('2012', fontsize=18)
+ax7.tick_params(axis='x', labelsize=12)
+ax7.tick_params(axis='y', labelsize=12)
+ax7.set(ylim=(0, 285))
+date_form = DateFormatter('%d.%m')
+ax7.xaxis.set_major_formatter(date_form)
+
+ax8.bar(x=dates1_2013, height=activity1_2013)
+ax8.set_title('2013', fontsize=18)
+ax8.tick_params(axis='x', labelsize=12)
+ax8.tick_params(axis='y', labelsize=12)
+ax8.set(ylim=(0, 285))
+ax8.xaxis.set_major_formatter(date_form)
+
+ax9.bar(x=dates1_2014, height=activity1_2014)
+ax9.set_title('2014', fontsize=18)
+ax9.tick_params(axis='x', labelsize=12)
+ax9.tick_params(axis='y', labelsize=12)
+ax9.set(ylim=(0, 285))
+ax9.xaxis.set_major_formatter(date_form)
+
+ax10.bar(x=dates1_2015, height=activity1_2015)
+ax10.set_title('2015', fontsize=18)
+ax10.tick_params(axis='x', labelsize=12)
+ax10.tick_params(axis='y', labelsize=12)
+ax10.set(ylim=(0, 285))
+ax10.xaxis.set_major_formatter(date_form)
+
+ax11.bar(x=dates1_2016, height=activity1_2016)
+ax11.set_title('2016', fontsize=18)
+ax11.tick_params(axis='x', labelsize=12)
+ax11.tick_params(axis='y', labelsize=12)
+ax11.set(ylim=(0, 285))
+ax11.xaxis.set_major_formatter(date_form)
+
+ax12.bar(x=dates1, height=activity1)
+ax12.set_title('Mean total', fontsize=18)
+ax12.tick_params(axis='x', labelsize=12)
+ax12.tick_params(axis='y', labelsize=12)
+ax12.set(ylim=(0, 285))
+ax12.xaxis.set_major_formatter(date_form)
+
+fig4.suptitle('Mean activity per year in Tingvoll in m/hr per date', fontsize=30)
+plt.tight_layout()
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/mean_activity_per_date_Tingvoll_b4_cut.png", dpi=500)
 
 plt.show()
