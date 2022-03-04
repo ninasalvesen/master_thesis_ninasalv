@@ -1,10 +1,8 @@
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
 from matplotlib.dates import DateFormatter
-import matplotlib.dates as mdates
 
 sns.set_style('darkgrid')
 
@@ -62,6 +60,7 @@ ax1.legend(loc='upper right', frameon=False, prop={'size': 22})
 plt.tight_layout()
 date_form = DateFormatter("%d.%m")
 ax1.xaxis.set_major_formatter(date_form)
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/start_end_dates_Tingvoll.png", dpi=500)
 
 # Plot of start and end dates in Fosen
 fig2, ax2 = plt.subplots(figsize=(16, 8))
@@ -76,5 +75,6 @@ plt.yticks(fontsize=25)
 ax2.legend(loc='upper right', frameon=False, prop={'size': 22})
 plt.tight_layout()
 ax2.xaxis.set_major_formatter(date_form)
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/start_end_dates_Fosen.png", dpi=500)
 
 plt.show()
