@@ -93,15 +93,15 @@ def ActivityPerHour(df):
     activity = np.zeros(len(hours))
     freq = np.zeros(len(hours))
     df_copy = df.copy()  # make a copy so that the original dataframe is not altered
-    df_copy['Date'] = df_copy['Datetime'].astype('str').str[-8:-6]
+    df_copy['Hour'] = df_copy['Datetime'].astype('str').str[-8:-6]
     df_copy.dropna(subset=['Datetime'], inplace=True)
     df_copy.reset_index(inplace=True, drop=True)
-    df_copy['Date'] = df_copy['Date'].astype('int')
+    df_copy['Hour'] = df_copy['Hour'].astype('int')
 
     i = 0
     while i < len(df_copy):
-        activity[hours.index(df_copy.at[i, 'Date'])] += df_copy.at[i, 'Haversine']
-        freq[hours.index(df_copy.at[i, 'Date'])] += 1
+        activity[hours.index(df_copy.at[i, 'Hour'])] += df_copy.at[i, 'Haversine']
+        freq[hours.index(df_copy.at[i, 'Hour'])] += 1
         i += 1
     for k in range(len(activity)):
         activity[k] = activity[k] / freq[k]
@@ -114,6 +114,24 @@ def ActivityPerHour(df):
     return hours, activity
 
 
+def ActivityPerHourBoxPlot(df):
+    hours = [[0 for _ in range(1)] for _ in range(24)]
+    df_copy = df.copy()  # make a copy so that the original dataframe is not altered
+    df_copy['Hour'] = df_copy['Datetime'].astype('str').str[-8:-6]
+    df_copy.dropna(subset=['Datetime'], inplace=True)
+    df_copy.reset_index(inplace=True, drop=True)
+    df_copy['Hour'] = df_copy['Hour'].astype('int')
+
+    i = 0
+    while i < len(df_copy):
+        hours[df_copy.at[i, 'Hour']].append(df_copy.at[i, 'Haversine'])
+        i += 1
+    for i in range(len(hours)):
+        del(hours[i][0])
+    return hours
+
+
+"""
 dates1, activity1 = DateActivity(df1)
 dates2, activity2 = DateActivity(df2)
 
@@ -268,5 +286,22 @@ plt.yticks(fontsize=25)
 ax14.xaxis.set_major_locator(plt.MaxNLocator(6))
 plt.tight_layout()
 plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/mean_activity_per_hour_Fosen_b4_cut.png", dpi=500)
+"""
+
+boxHours = ActivityPerHourBoxPlot(df1)
+labels = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18',
+          '19', '20', '21', '22', '23']
+
+# Plot of activity per hour in Tingvoll
+fig7, ax15 = plt.subplots(figsize=(16, 8))
+ax15.set_xlabel('Hour', fontsize=30, labelpad=20)
+ax15.set_ylabel('Velocity, m/hr', fontsize=30, labelpad=20)
+ax15.set_title('Mean activity per hour in Fosen', fontsize=40, pad=30)
+medianProps = dict(linewidth=2.5)
+plt.boxplot(boxHours, showfliers=False, labels=labels, showmeans=True, medianprops=medianProps)
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
+ax15.set(ylim=(-150, 450))
+plt.tight_layout()
 
 plt.show()
