@@ -5,10 +5,6 @@ df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet 
                   delimiter=';')
 df2['Datetime'] = pd.to_datetime(df2['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
-df3 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen.csv',
-                  delimiter=';')
-df3['Datetime'] = pd.to_datetime(df2['Datetime'], format='%Y-%m-%d %H:%M:%S')
-
 
 def zeros(df):  # remover all zeros at beginning and end of sets
     i = 2
@@ -103,4 +99,4 @@ def impute(df):  # imputes average points where there are zeros
 df2 = remove(df2)
 df2 = zeros(df2)
 df2 = impute(df2)
-df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen.csv', index=False, sep=';')
+df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V3 med pointclean.csv', index=False, sep=';')

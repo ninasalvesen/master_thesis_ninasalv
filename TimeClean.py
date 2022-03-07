@@ -71,10 +71,22 @@ def TimeClean(df, delta):
                 i += 1
             continue
 
-        if day_diff == -1:
+        if day_diff < 0 and df['Datetime'][i].day not in month_end:
             count += 1
             df.at[i + 1, 'Datetime'] = df.at[i + 1, 'Datetime'].replace(day=df.at[i, 'Datetime'].day)
             continue
+
+        k = i
+        while ((df.at[k + 1, 'Datetime'] - df.at[i, 'Datetime']).total_seconds() / (60 * 60)) < 0:
+            k += 1
+        if k - i > 1:
+            df = df.drop(df.index[i + 1:k])
+            df.reset_index(inplace=True, drop=True)
+        elif k - i == 1:
+            if not pd.isnull(df.at[i + 2, 'Datetime']):
+                count += 1
+                mid_diff = (df.at[i + 2, 'Datetime'] - df.at[i, 'Datetime']).total_seconds() / 2
+                df.at[i + 1, 'Datetime'] = df.at[i, 'Datetime'] + pd.Timedelta(hours=mid_diff / (60 * 60))
 
         # delta enables the user to choose the time difference limit in hours
         if ((df.at[i + 1, 'Datetime'] - df.at[i, 'Datetime']).total_seconds() / (60*60)) > delta:
@@ -97,8 +109,6 @@ def EqualTimeError(df):
 
         time = ((df.at[i, 'Datetime'] - df.at[i - 1, 'Datetime']).total_seconds() / (60 * 60))  # in hour(s)
         if time == 0:
-            print(i)
-            print(df.at[i, 'Datetime'])
             df = df.drop(df.index[i])
             df.reset_index(inplace=True, drop=True)
             continue

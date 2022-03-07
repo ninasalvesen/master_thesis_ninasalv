@@ -6,7 +6,7 @@ import numpy as np
 df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V2 med timeclean.csv', delimiter=';',
                   dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
 
-df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%d/%m/%Y %H:%M')
+df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
 df1['Haversine'] = 0
 
 df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V3 med pointclean.csv',
@@ -49,7 +49,6 @@ def insert_speed(df):
 
 
 def dist_check(df, dist_max):  # imputes average points where the distance is too big
-    check = 0
     i = 0
     while i < (len(df)-2):
         if (i % 10000) == 0:
