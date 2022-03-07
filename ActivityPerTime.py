@@ -2,11 +2,9 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-
 from matplotlib.dates import DateFormatter
 
 sns.set_style('darkgrid')
-
 
 df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V3 med Haversine.csv', delimiter=';',
                   dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
@@ -66,26 +64,54 @@ def DateActivityPerYear(df, year):
         j += 1
     if year == 2020:
         j += 2
-    df_temp = df.loc[start:j-2, :].copy()
+    df_copy = df.loc[start:j-2, :].copy()
 
     min_date, max_date = FindExtremeDates(df)
     date_range = pd.date_range(start=min_date, end=max_date).astype('str').str[-5:].tolist()
     activity = np.zeros(len(date_range))
     freq = np.zeros(len(date_range))
-    df_temp.loc[:, 'Date'] = df_temp.loc[:, 'Datetime'].dt.date.astype('str').str[-5:]
-    df_temp.dropna(subset=['Datetime'], inplace=True)
-    df_temp.reset_index(inplace=True, drop=True)
+    df_copy.loc[:, 'Date'] = df_copy.loc[:, 'Datetime'].dt.date.astype('str').str[-5:]
+    df_copy.dropna(subset=['Datetime'], inplace=True)
+    df_copy.reset_index(inplace=True, drop=True)
 
     i = 0
-    while i < len(df_temp):
-        activity[date_range.index(df_temp.at[i, 'Date'])] += df_temp.at[i, 'Haversine']
-        freq[date_range.index(df_temp.at[i, 'Date'])] += 1
+    while i < len(df_copy):
+        activity[date_range.index(df_copy.at[i, 'Date'])] += df_copy.at[i, 'Haversine']
+        freq[date_range.index(df_copy.at[i, 'Date'])] += 1
         i += 1
     for k in range(len(activity)):
         if freq[k] != 0:
             activity[k] = activity[k] / freq[k]
     date_range = pd.to_datetime(date_range, format='%m-%d')
     return date_range, activity
+
+
+def ActivityPerHour(df):
+    hours = []
+    for i in range(24):
+        hours.append(i)
+    activity = np.zeros(len(hours))
+    freq = np.zeros(len(hours))
+    df_copy = df.copy()  # make a copy so that the original dataframe is not altered
+    df_copy['Date'] = df_copy['Datetime'].astype('str').str[-8:-6]
+    df_copy.dropna(subset=['Datetime'], inplace=True)
+    df_copy.reset_index(inplace=True, drop=True)
+    df_copy['Date'] = df_copy['Date'].astype('int')
+
+    i = 0
+    while i < len(df_copy):
+        activity[hours.index(df_copy.at[i, 'Date'])] += df_copy.at[i, 'Haversine']
+        freq[hours.index(df_copy.at[i, 'Date'])] += 1
+        i += 1
+    for k in range(len(activity)):
+        activity[k] = activity[k] / freq[k]
+    hours = [str(int) for int in hours]
+    for q in range(len(hours)):
+        if len(hours[q]) == 1:
+            hours[q] = '0' + hours[q] + ':00'
+        else:
+            hours[q] = hours[q] + ':00'
+    return hours, activity
 
 
 dates1, activity1 = DateActivity(df1)
@@ -211,5 +237,36 @@ ax12.xaxis.set_major_formatter(date_form)
 fig4.suptitle('Mean activity per year in Tingvoll in m/hr per date', fontsize=30)
 plt.tight_layout()
 plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/mean_activity_per_date_Tingvoll_b4_cut.png", dpi=500)
+
+
+hours1, hourlyActivity1 = ActivityPerHour(df1)
+hours2, hourlyActivity2 = ActivityPerHour(df2)
+
+# Plot of activity per hour in Tingvoll
+fig5, ax13 = plt.subplots(figsize=(16, 8))
+plt.bar(x=hours1, height=hourlyActivity1)
+ax13.set_xlabel('Hour', fontsize=35, labelpad=20)
+ax13.set_ylabel('Velocity, m/hr', fontsize=35, labelpad=30)
+ax13.set_title('Mean activity per hour in Tingvoll', fontsize=40, pad=30)
+ax13.set(ylim=(0, 170))
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=25)
+ax13.xaxis.set_major_locator(plt.MaxNLocator(6))
+plt.tight_layout()
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/mean_activity_per_hour_Tingvoll_b4_cut.png", dpi=500)
+
+
+# Plot of activity per hour in Tingvoll
+fig6, ax14 = plt.subplots(figsize=(16, 8))
+plt.bar(x=hours2, height=hourlyActivity2)
+ax14.set_xlabel('Hour', fontsize=35, labelpad=20)
+ax14.set_ylabel('Velocity, m/hr', fontsize=35, labelpad=30)
+ax14.set_title('Mean activity per hour in Fosen', fontsize=40, pad=30)
+ax14.set(ylim=(0, 170))
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=25)
+ax14.xaxis.set_major_locator(plt.MaxNLocator(6))
+plt.tight_layout()
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/mean_activity_per_hour_Fosen_b4_cut.png", dpi=500)
 
 plt.show()
