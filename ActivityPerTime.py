@@ -289,8 +289,8 @@ plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/mean_activity_
 
 boxHours1 = ActivityPerHourBoxPlot(df1)
 boxHours2 = ActivityPerHourBoxPlot(df2)
-labels = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18',
-          '19', '20', '21', '22', '23']
+labels = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17',
+          '18', '19', '20', '21', '22', '23']
 
 # Plot of activity per hour in Tingvoll
 fig7, ax15 = plt.subplots(figsize=(16, 8))
