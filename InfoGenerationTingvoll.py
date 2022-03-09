@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V3 med Haversine.csv',
+df = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V4 after.csv',
                  delimiter=';', dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
 print(df.head())
 df['Datetime'] = pd.to_datetime(df['Datetime'], format='%Y-%m-%d %H:%M:%S')
@@ -31,4 +31,4 @@ while i < len(df):
         # check progress against number of iterations
         print("Reached number: ", i)
 
-df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Informasjon datasett Tingvoll.csv', index=False, sep=';')
+df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Informasjon datasett Tingvoll after cut.csv', index=False, sep=';')
