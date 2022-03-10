@@ -6,12 +6,11 @@ from matplotlib.dates import DateFormatter
 
 sns.set_style('darkgrid')
 
-df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V4 after cut.csv', delimiter=';',
-                  dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
+df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V5 updated format.csv', delimiter=';')
 
 df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
-df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V5 after cut.csv',
+df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V6 updated format.csv',
                   delimiter=';')
 df2['Datetime'] = pd.to_datetime(df2['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
@@ -131,7 +130,7 @@ def ActivityPerHourBoxPlot(df):
         del(hours[i][0])
     return hours
 
-
+"""
 dates1, activity1 = DateActivity(df1)
 dates2, activity2 = DateActivity(df2)
 
@@ -170,7 +169,7 @@ ax3.bar(x=dates2_2018, height=activity2_2018)
 ax3.set_title('2018', fontsize=18)
 ax3.tick_params(axis='x', labelsize=12)
 ax3.tick_params(axis='y', labelsize=12)
-ax3.set(ylim=(0, 285))
+ax3.set(ylim=(0, 300))
 date_form = DateFormatter('%d.%m')
 ax3.xaxis.set_major_formatter(date_form)
 
@@ -178,14 +177,14 @@ ax4.bar(x=dates2_2019, height=activity2_2019)
 ax4.set_title('2019', fontsize=18)
 ax4.tick_params(axis='x', labelsize=12)
 ax4.tick_params(axis='y', labelsize=12)
-ax4.set(ylim=(0, 285))
+ax4.set(ylim=(0, 300))
 ax4.xaxis.set_major_formatter(date_form)
 
 ax5.bar(x=dates2_2020, height=activity2_2020)
 ax5.set_title('2020', fontsize=18)
 ax5.tick_params(axis='x', labelsize=12)
 ax5.tick_params(axis='y', labelsize=12)
-ax5.set(ylim=(0, 285))
+ax5.set(ylim=(0, 300))
 ax5.xaxis.set_major_formatter(date_form)
 
 ax6.xaxis.set_major_formatter(date_form)
@@ -193,12 +192,12 @@ ax6.bar(x=dates2, height=activity2)
 ax6.set_title('Mean total', fontsize=18)
 ax6.tick_params(axis='x', labelsize=12)
 ax6.tick_params(axis='y', labelsize=12)
-ax6.set(ylim=(0, 285))
+ax6.set(ylim=(0, 300))
 ax6.xaxis.set_major_formatter(date_form)
 
 fig3.suptitle('Mean activity per year in Fosen in m/hr per date', fontsize=30)
 plt.tight_layout()
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut/mean_activity_per_date_Fosen_aftercut.png", dpi=500)
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 2.0/mean_activity_per_date_Fosen_aftercut2.0.png", dpi=500)
 
 
 dates1_2012, activity1_2012 = DateActivityPerYear(df1, 2012)
@@ -213,7 +212,7 @@ ax7.bar(x=dates1_2012, height=activity1_2012)
 ax7.set_title('2012', fontsize=18)
 ax7.tick_params(axis='x', labelsize=12)
 ax7.tick_params(axis='y', labelsize=12)
-ax7.set(ylim=(0, 285))
+ax7.set(ylim=(0, 385))
 date_form = DateFormatter('%d.%m')
 ax7.xaxis.set_major_formatter(date_form)
 
@@ -221,41 +220,41 @@ ax8.bar(x=dates1_2013, height=activity1_2013)
 ax8.set_title('2013', fontsize=18)
 ax8.tick_params(axis='x', labelsize=12)
 ax8.tick_params(axis='y', labelsize=12)
-ax8.set(ylim=(0, 285))
+ax8.set(ylim=(0, 385))
 ax8.xaxis.set_major_formatter(date_form)
 
 ax9.bar(x=dates1_2014, height=activity1_2014)
 ax9.set_title('2014', fontsize=18)
 ax9.tick_params(axis='x', labelsize=12)
 ax9.tick_params(axis='y', labelsize=12)
-ax9.set(ylim=(0, 285))
+ax9.set(ylim=(0, 385))
 ax9.xaxis.set_major_formatter(date_form)
 
 ax10.bar(x=dates1_2015, height=activity1_2015)
 ax10.set_title('2015', fontsize=18)
 ax10.tick_params(axis='x', labelsize=12)
 ax10.tick_params(axis='y', labelsize=12)
-ax10.set(ylim=(0, 285))
+ax10.set(ylim=(0, 385))
 ax10.xaxis.set_major_formatter(date_form)
 
 ax11.bar(x=dates1_2016, height=activity1_2016)
 ax11.set_title('2016', fontsize=18)
 ax11.tick_params(axis='x', labelsize=12)
 ax11.tick_params(axis='y', labelsize=12)
-ax11.set(ylim=(0, 285))
+ax11.set(ylim=(0, 385))
 ax11.xaxis.set_major_formatter(date_form)
 
 ax12.bar(x=dates1, height=activity1)
 ax12.set_title('Mean total', fontsize=18)
 ax12.tick_params(axis='x', labelsize=12)
 ax12.tick_params(axis='y', labelsize=12)
-ax12.set(ylim=(0, 285))
+ax12.set(ylim=(0, 385))
 ax12.xaxis.set_major_formatter(date_form)
 
 fig4.suptitle('Mean activity per year in Tingvoll in m/hr per date', fontsize=30)
 plt.tight_layout()
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut/mean_activity_per_date_Tingvoll_aftercut.png", dpi=500)
-
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 2.0/mean_activity_per_date_Tingvoll_aftercut2.0.png", dpi=500)
+"""
 
 hours1, hourlyActivity1 = ActivityPerHour(df1)
 hours2, hourlyActivity2 = ActivityPerHour(df2)
@@ -266,34 +265,34 @@ plt.bar(x=hours1, height=hourlyActivity1)
 ax13.set_xlabel('Hour', fontsize=35, labelpad=20)
 ax13.set_ylabel('Velocity, m/hr', fontsize=35, labelpad=30)
 ax13.set_title('Mean activity per hour in Tingvoll', fontsize=40, pad=30)
-ax13.set(ylim=(0, 170))
+ax13.set(ylim=(0, 210))
 plt.xticks(fontsize=20)
 plt.yticks(fontsize=25)
 ax13.xaxis.set_major_locator(plt.MaxNLocator(6))
 plt.tight_layout()
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut/mean_activity_per_hour_Tingvoll_aftercut.png", dpi=500)
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 2.0/mean_activity_per_hour_Tingvoll_aftercut2.0.png", dpi=500)
 
 
-# Plot of activity per hour in Tingvoll
+# Plot of activity per hour in Fosen
 fig6, ax14 = plt.subplots(figsize=(16, 8))
 plt.bar(x=hours2, height=hourlyActivity2)
 ax14.set_xlabel('Hour', fontsize=35, labelpad=20)
 ax14.set_ylabel('Velocity, m/hr', fontsize=35, labelpad=30)
 ax14.set_title('Mean activity per hour in Fosen', fontsize=40, pad=30)
-ax14.set(ylim=(0, 170))
+ax14.set(ylim=(0, 210))
 plt.xticks(fontsize=20)
 plt.yticks(fontsize=25)
 ax14.xaxis.set_major_locator(plt.MaxNLocator(6))
 plt.tight_layout()
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut/mean_activity_per_hour_Fosen_aftercut.png", dpi=500)
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 2.0/mean_activity_per_hour_Fosen_aftercut2.0.png", dpi=500)
 
-
+"""
 boxHours1 = ActivityPerHourBoxPlot(df1)
 boxHours2 = ActivityPerHourBoxPlot(df2)
 labels = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17',
           '18', '19', '20', '21', '22', '23']
 
-# Plot of activity per hour in Tingvoll
+# Boxplot of activity per hour in Tingvoll
 fig7, ax15 = plt.subplots(figsize=(16, 8))
 ax15.set_xlabel('Hour', fontsize=30, labelpad=20)
 ax15.set_ylabel('Velocity, m/hr', fontsize=30, labelpad=20)
@@ -302,10 +301,11 @@ medianProps = dict(linewidth=2.5)
 plt.boxplot(boxHours1, showfliers=False, labels=labels, showmeans=True, medianprops=medianProps)
 plt.xticks(fontsize=20)
 plt.yticks(fontsize=20)
-ax15.set(ylim=(-15, 450))
+ax15.set(ylim=(-15, 550))
 plt.tight_layout()
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut/boxplot_activity_per_hour_Fosen_aftercut.png", dpi=500)
+#plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 2.0/boxplot_activity_per_hour_Fosen_aftercut2.0.png", dpi=500)
 
+# Boxplot of activity per hour Fosen
 fig8, ax16 = plt.subplots(figsize=(16, 8))
 ax16.set_xlabel('Hour', fontsize=30, labelpad=20)
 ax16.set_ylabel('Velocity, m/hr', fontsize=30, labelpad=20)
@@ -313,8 +313,8 @@ ax16.set_title('Mean activity per hour in Fosen', fontsize=40, pad=30)
 plt.boxplot(boxHours2, showfliers=False, labels=labels, showmeans=True, medianprops=medianProps)
 plt.xticks(fontsize=20)
 plt.yticks(fontsize=20)
-ax16.set(ylim=(-15, 450))
+ax16.set(ylim=(-15, 550))
 plt.tight_layout()
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut/boxplot_activity_per_hour_Tingvoll_aftercut.png", dpi=500)
-
+#plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 2.0/boxplot_activity_per_hour_Tingvoll_aftercut2.0.png", dpi=500)
+"""
 plt.show()

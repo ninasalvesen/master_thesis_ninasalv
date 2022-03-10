@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-df = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V4 med Haversine.csv',
+df = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V6 updated format.csv',
                  delimiter=';')
 df['Datetime'] = pd.to_datetime(df['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
@@ -10,7 +10,7 @@ print(df.head())
 lat = []
 long = []
 time = []
-dataset = 2
+dataset = 216
 check = 0
 i = 0
 while i < len(df):
@@ -38,9 +38,9 @@ extreme_values = [min(long), max(long), min(lat), max(lat)]
 print("extreme values: ", extreme_values)
 
 
-figure1 = plt.imread(f"/Users/ninasalvesen/Documents/Sauedata/Bilder/figure_fosen_close.png")
+figure1 = plt.imread(f"/Users/ninasalvesen/Documents/Sauedata/Bilder/Prosjektoppgave/figure_fosen_close.png")
 fig1 = [10.1856, 10.4740, 63.6959, 63.8074]
-figure2 = plt.imread(f"/Users/ninasalvesen/Documents/Sauedata/Bilder/figure_fosen_far.png")
+figure2 = plt.imread(f"/Users/ninasalvesen/Documents/Sauedata/Bilder/Prosjektoppgave/figure_fosen_far.png")
 fig2 = [10.1720, 10.4604, 63.7823, 63.8934]
 
 fig, ax = plt.subplots()
