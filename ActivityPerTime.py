@@ -6,12 +6,12 @@ from matplotlib.dates import DateFormatter
 
 sns.set_style('darkgrid')
 
-df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V3 med Haversine.csv', delimiter=';',
+df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V4 after cut.csv', delimiter=';',
                   dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
 
 df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
-df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V4 med Haversine.csv',
+df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V5 after cut.csv',
                   delimiter=';')
 df2['Datetime'] = pd.to_datetime(df2['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
@@ -41,8 +41,9 @@ def DateActivity(df):
         activity[date_range.index(df_copy.at[i, 'Date'])] += df_copy.at[i, 'Haversine']
         freq[date_range.index(df_copy.at[i, 'Date'])] += 1
         i += 1
-    for j in range(len(activity)):
-        activity[j] = activity[j] / freq[j]
+    for k in range(len(activity)):
+        if freq[k] != 0:
+            activity[k] = activity[k] / freq[k]
     date_range = pd.to_datetime(date_range, format='%m-%d')
     return date_range, activity
 
@@ -197,7 +198,7 @@ ax6.xaxis.set_major_formatter(date_form)
 
 fig3.suptitle('Mean activity per year in Fosen in m/hr per date', fontsize=30)
 plt.tight_layout()
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/mean_activity_per_date_Fosen_b4_cut.png", dpi=500)
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut/mean_activity_per_date_Fosen_aftercut.png", dpi=500)
 
 
 dates1_2012, activity1_2012 = DateActivityPerYear(df1, 2012)
@@ -253,7 +254,7 @@ ax12.xaxis.set_major_formatter(date_form)
 
 fig4.suptitle('Mean activity per year in Tingvoll in m/hr per date', fontsize=30)
 plt.tight_layout()
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/mean_activity_per_date_Tingvoll_b4_cut.png", dpi=500)
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut/mean_activity_per_date_Tingvoll_aftercut.png", dpi=500)
 
 
 hours1, hourlyActivity1 = ActivityPerHour(df1)
@@ -270,7 +271,7 @@ plt.xticks(fontsize=20)
 plt.yticks(fontsize=25)
 ax13.xaxis.set_major_locator(plt.MaxNLocator(6))
 plt.tight_layout()
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/mean_activity_per_hour_Tingvoll_b4_cut.png", dpi=500)
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut/mean_activity_per_hour_Tingvoll_aftercut.png", dpi=500)
 
 
 # Plot of activity per hour in Tingvoll
@@ -284,7 +285,7 @@ plt.xticks(fontsize=20)
 plt.yticks(fontsize=25)
 ax14.xaxis.set_major_locator(plt.MaxNLocator(6))
 plt.tight_layout()
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/mean_activity_per_hour_Fosen_b4_cut.png", dpi=500)
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut/mean_activity_per_hour_Fosen_aftercut.png", dpi=500)
 
 
 boxHours1 = ActivityPerHourBoxPlot(df1)
@@ -303,7 +304,7 @@ plt.xticks(fontsize=20)
 plt.yticks(fontsize=20)
 ax15.set(ylim=(-15, 450))
 plt.tight_layout()
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/boxplot_activity_per_hour_Fosen_b4_cut.png", dpi=500)
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut/boxplot_activity_per_hour_Fosen_aftercut.png", dpi=500)
 
 fig8, ax16 = plt.subplots(figsize=(16, 8))
 ax16.set_xlabel('Hour', fontsize=30, labelpad=20)
@@ -314,6 +315,6 @@ plt.xticks(fontsize=20)
 plt.yticks(fontsize=20)
 ax16.set(ylim=(-15, 450))
 plt.tight_layout()
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/boxplot_activity_per_hour_Tingvoll_b4_cut.png", dpi=500)
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut/boxplot_activity_per_hour_Tingvoll_aftercut.png", dpi=500)
 
 plt.show()

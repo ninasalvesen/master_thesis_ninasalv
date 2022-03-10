@@ -1,16 +1,16 @@
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V5 after cut.csv', delimiter=';')
+df = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V5 after cut 2.0.csv', delimiter=';')
 print(df.head())
-df['Datetime'] = pd.to_datetime(df['Datetime'], format='%Y-%m-%d %H:%M:%S')
+df['Datetime'] = pd.to_datetime(df['Datetime'], format='%d/%m/%Y %H:%M')
 
 df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/NIBIO_Telespor_lamsøye.csv', delimiter=';', encoding='latin-1')
 
 df2['uniq.log'] = df2['Telespor_id'].astype(str) + '_' + df2['yr'].astype(str)
 df2['uniq.log_mor'] = df2['M_Telespor_id'].astype(str) + '_' + df2['yr'].astype(str)
 
-df3 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Informasjon datasett Fosen.csv', delimiter=';', encoding='latin-1')
+df3 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Informasjon datasett Fosen after cut.csv', delimiter=';', encoding='latin-1')
 df3['i, slutt'] = np.nan
 print(df2.head())
 print(df3.head())
@@ -37,6 +37,10 @@ while i < len(df):
             df3.at[sett - 1, 'i, slutt'] = i - 1
             if sett > 2:
                 df3.at[sett - 1, 'Size'] = df3.at[sett - 1, 'i, slutt'] - df3.at[sett - 2, 'i, slutt'] - 1
+                df3.at[0, 'Size'] = df3.at[0, 'i, slutt']
+                df3.at[1, 'Size'] = df3.at[1, 'i, slutt'] - df3.at[0, 'i, slutt']
+
+
         sett += 1
     i += 1
     if i == len(df) - 1:
@@ -47,4 +51,5 @@ while i < len(df):
         # check progress against number of iterations
         print("Reached number: ", i)
 
-df3.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Informasjon datasett Fosen after cut.csv', index=False, sep=';')
+
+df3.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Informasjon datasett Fosen after cut 2.0.csv', index=False, sep=';')

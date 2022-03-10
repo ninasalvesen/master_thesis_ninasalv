@@ -7,12 +7,12 @@ from matplotlib.dates import DateFormatter
 sns.set_style('darkgrid')
 
 
-df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V3 med Haversine.csv', delimiter=';',
+df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V4 after cut.csv', delimiter=';',
                   dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
 
-df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%d/%m/%Y %H:%M')
+df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
-df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V4 med Haversine.csv',
+df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V5 after cut.csv',
                   delimiter=';')
 df2['Datetime'] = pd.to_datetime(df2['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
@@ -60,7 +60,7 @@ ax1.legend(loc='upper right', frameon=False, prop={'size': 22})
 plt.tight_layout()
 date_form = DateFormatter("%d.%m")
 ax1.xaxis.set_major_formatter(date_form)
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/start_end_dates_Tingvoll.png", dpi=500)
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/start_end_dates_Tingvoll_aftercut.png", dpi=500)
 
 # Plot of start and end dates in Fosen
 fig2, ax2 = plt.subplots(figsize=(16, 8))
@@ -75,6 +75,6 @@ plt.yticks(fontsize=25)
 ax2.legend(loc='upper right', frameon=False, prop={'size': 22})
 plt.tight_layout()
 ax2.xaxis.set_major_formatter(date_form)
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/start_end_dates_Fosen.png", dpi=500)
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/start_end_dates_Fosen_aftercut.png", dpi=500)
 
 plt.show()

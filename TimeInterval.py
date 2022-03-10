@@ -20,7 +20,6 @@ def TimeIntervalFosen(df):
     i = 1  # start at first line of data
     a = True  # initialize
     while i < len(df):
-        print('hei')
         if pd.isnull(df.at[i, 'Datetime']):
             print(dataset)  # keep track of progress
             k = i + 1  # k marks the beginning of each dataset and stores the row of the first line of data
