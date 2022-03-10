@@ -130,7 +130,7 @@ def ActivityPerHourBoxPlot(df):
         del(hours[i][0])
     return hours
 
-"""
+
 dates1, activity1 = DateActivity(df1)
 dates2, activity2 = DateActivity(df2)
 
@@ -254,7 +254,7 @@ ax12.xaxis.set_major_formatter(date_form)
 fig4.suptitle('Mean activity per year in Tingvoll in m/hr per date', fontsize=30)
 plt.tight_layout()
 plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 2.0/mean_activity_per_date_Tingvoll_aftercut2.0.png", dpi=500)
-"""
+
 
 hours1, hourlyActivity1 = ActivityPerHour(df1)
 hours2, hourlyActivity2 = ActivityPerHour(df2)
@@ -286,7 +286,7 @@ ax14.xaxis.set_major_locator(plt.MaxNLocator(6))
 plt.tight_layout()
 plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 2.0/mean_activity_per_hour_Fosen_aftercut2.0.png", dpi=500)
 
-"""
+
 boxHours1 = ActivityPerHourBoxPlot(df1)
 boxHours2 = ActivityPerHourBoxPlot(df2)
 labels = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17',
@@ -303,7 +303,7 @@ plt.xticks(fontsize=20)
 plt.yticks(fontsize=20)
 ax15.set(ylim=(-15, 550))
 plt.tight_layout()
-#plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 2.0/boxplot_activity_per_hour_Fosen_aftercut2.0.png", dpi=500)
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 2.0/boxplot_activity_per_hour_Fosen_aftercut2.0.png", dpi=500)
 
 # Boxplot of activity per hour Fosen
 fig8, ax16 = plt.subplots(figsize=(16, 8))
@@ -315,6 +315,6 @@ plt.xticks(fontsize=20)
 plt.yticks(fontsize=20)
 ax16.set(ylim=(-15, 550))
 plt.tight_layout()
-#plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 2.0/boxplot_activity_per_hour_Tingvoll_aftercut2.0.png", dpi=500)
-"""
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 2.0/boxplot_activity_per_hour_Tingvoll_aftercut2.0.png", dpi=500)
+
 plt.show()
