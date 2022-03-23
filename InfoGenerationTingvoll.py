@@ -1,11 +1,11 @@
 import pandas as pd
 
-df = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V4 after cut 2.0.csv',
+df = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V5 after cut 4.0.csv',
                  delimiter=';', dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
 print(df.head())
 df['Datetime'] = pd.to_datetime(df['Datetime'], format='%d/%m/%Y %H:%M')
 
-df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Informasjon datasett Tingvoll after cut 2.0.csv', delimiter=';')
+df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Informasjon datasett Tingvoll.csv', delimiter=';')
 df3 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Informasjon datasett Tingvoll after cut.csv', delimiter=';')
 print(df2.head())
 
@@ -38,4 +38,4 @@ while i < len(df):
         print("Reached number: ", i)
 
 
-df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Informasjon datasett Tingvoll after cut 2.0.csv', index=False, sep=';')
+df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Informasjon datasett Tingvoll after cut 4.0.csv', index=False, sep=';')

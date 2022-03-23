@@ -6,12 +6,12 @@ from matplotlib.ticker import NullFormatter
 
 sns.set_style("darkgrid")
 
-df1 = pd.read_csv("/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V4 after cut 2.0.csv", delimiter=';',
+df1 = pd.read_csv("/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V5 after cut 4.0.csv", delimiter=';',
                  dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
 
 df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%d/%m/%Y %H:%M')
 
-df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V5 after cut 2.0.csv',
+df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V6 after cut 4.0.csv',
                   delimiter=';')
 df2['Datetime'] = pd.to_datetime(df2['Datetime'], format='%d/%m/%Y %H:%M')
 
@@ -60,7 +60,7 @@ ax1.yaxis.set_minor_formatter(NullFormatter())
 plt.legend()
 ax1.legend(loc='upper right', frameon=True, prop={'size': 20})
 plt.tight_layout()
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut/sizecheck_tingvoll_aftercut 2.0.png", dpi=500)
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 4.0/sizecheck_tingvoll_aftercut 4.0.png", dpi=500)
 
 fig2, ax2 = plt.subplots(figsize=(16, 8))
 sns.lineplot(x=x_fosen, y=size_fosen, linewidth=2.5, color='cornflowerblue', label="Size of each data set")
@@ -75,6 +75,6 @@ ax2.yaxis.set_minor_formatter(NullFormatter())
 plt.legend()
 ax2.legend(loc='upper left', frameon=True, prop={'size': 20})
 plt.tight_layout()
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut/sizecheck_fosen_aftercut 2.0.png", dpi=500)
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 4.0/sizecheck_fosen_aftercut 4.0.png", dpi=500)
 
 plt.show()

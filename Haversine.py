@@ -3,16 +3,16 @@ import numpy as np
 
 # both check the haversine, and impute values where needed, and add distance per hour as a feature
 
-df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V2 med timeclean.csv', delimiter=';',
+df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V4 after cut 2.0.csv', delimiter=';',
                   dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
 
 df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
-df1['Haversine'] = 0
+#df1['Haversine'] = 0
 
-df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V3 med pointclean.csv',
+df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V5 after cut 2.0.csv',
                   delimiter=';')
 df2['Datetime'] = pd.to_datetime(df2['Datetime'], format='%Y-%m-%d %H:%M:%S')
-df2['Haversine'] = 0
+#df2['Haversine'] = 0
 
 print(df1.head())
 print(df2.head())
@@ -59,14 +59,14 @@ def dist_check(df, dist_max):  # imputes average points where the distance is to
             continue
 
         if df.at[i + 1, 'Haversine'] > dist_max:
+            if pd.isnull(df.at[i + 2, 'Datetime']):  # make sure not to impute with nans, drop the row instead
+                df = df.drop(df.index[i + 1])
+                df.reset_index(inplace=True, drop=True)
+                continue
             dist = haversine(df.at[i + 2, 'Lat'], df.at[i + 2, 'Lon'], df.at[i, 'Lat'], df.at[i, 'Lon'])
             time = (df.at[i + 2, 'Datetime'] - df.at[i, 'Datetime']).total_seconds() / (60 * 60)
             speed = dist / time
             if speed < dist_max:
-                if pd.isnull(df.at[i + 2, 'Datetime']):  # make sure not to impute with nans, drop the row instead
-                    df = df.drop(df.index[i + 1])
-                    df.reset_index(inplace=True, drop=True)
-                    continue
                 # impute new values
                 df.at[i + 1, 'Lat'] = (df.at[i, 'Lat'] + df.at[i + 2, 'Lat']) / 2
                 df.at[i + 1, 'Lon'] = (df.at[i, 'Lon'] + df.at[i + 2, 'Lon']) / 2
@@ -81,11 +81,6 @@ def dist_check(df, dist_max):  # imputes average points where the distance is to
                 continue
 
             elif df.at[i + 2, 'Haversine'] < dist_max:
-                if pd.isnull(df.at[i + 2, 'Datetime']):
-                    df = df.drop(df.index[i + 1])
-                    df.reset_index(inplace=True, drop=True)
-                    continue
-
                 df.at[i + 1, 'Lat'] = (df.at[i, 'Lat'] + df.at[i + 2, 'Lat']) / 2
                 df.at[i + 1, 'Lon'] = (df.at[i, 'Lon'] + df.at[i + 2, 'Lon']) / 2
 
@@ -95,6 +90,11 @@ def dist_check(df, dist_max):  # imputes average points where the distance is to
                 df.at[i + 2, 'Haversine'] = haversine(df.at[i + 2, 'Lat'], df.at[i + 2, 'Lon'], df.at[i + 1, 'Lat'],
                                                       df.at[i + 1, 'Lon']) / ((df.at[i + 2, 'Datetime'] - df.at[
                                                         i + 1, 'Datetime']).total_seconds() / (60 * 60))
+
+            elif df.at[i + 2, 'Haversine'] < dist_max:
+                df = df.drop(df.index[i + 1])
+                df.reset_index(inplace=True, drop=True)
+                continue
 
             else:
                 print('Manual check on', i)
@@ -111,5 +111,5 @@ df2 = insert_speed(df2)
 df2 = dist_check(df2, 15000)
 df2 = insert_speed(df2)  # update velocity as final check
 
-df1.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V3 med Haversine.csv', index=False, sep=';')
-df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V4 med Haversine.csv', index=False, sep=';')
+df1.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V4 after cut 2.0.csv', index=False, sep=';')
+df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V5 after cut 2.0.csv', index=False, sep=';')

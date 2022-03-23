@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V5 after cut 2.0.csv', delimiter=';')
+df = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V6 after cut 4.0.csv', delimiter=';')
 print(df.head())
 df['Datetime'] = pd.to_datetime(df['Datetime'], format='%d/%m/%Y %H:%M')
 
@@ -10,8 +10,8 @@ df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/NIBIO_T
 df2['uniq.log'] = df2['Telespor_id'].astype(str) + '_' + df2['yr'].astype(str)
 df2['uniq.log_mor'] = df2['M_Telespor_id'].astype(str) + '_' + df2['yr'].astype(str)
 
-df3 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Informasjon datasett Fosen after cut.csv', delimiter=';', encoding='latin-1')
-df3['i, slutt'] = np.nan
+df3 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Informasjon datasett Fosen.csv', delimiter=';', encoding='latin-1')
+#df3['i, slutt'] = np.nan
 print(df2.head())
 print(df3.head())
 
@@ -52,4 +52,4 @@ while i < len(df):
         print("Reached number: ", i)
 
 
-df3.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Informasjon datasett Fosen after cut 2.0.csv', index=False, sep=';')
+df3.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Informasjon datasett Fosen after cut 4.0.csv', index=False, sep=';')

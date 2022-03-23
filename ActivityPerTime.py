@@ -6,13 +6,16 @@ from matplotlib.dates import DateFormatter
 
 sns.set_style('darkgrid')
 
-df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V5 updated format.csv', delimiter=';')
+#df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V5 updated format2.csv', delimiter=';')
 
-df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
+df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V5 after cut 4.0.csv', delimiter=';',
+                  dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
 
-df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V6 updated format.csv',
+df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%d/%m/%Y %H:%M')
+
+df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V6 after cut 4.0.csv',
                   delimiter=';')
-df2['Datetime'] = pd.to_datetime(df2['Datetime'], format='%Y-%m-%d %H:%M:%S')
+df2['Datetime'] = pd.to_datetime(df2['Datetime'], format='%d/%m/%Y %H:%M')
 
 
 def FindExtremeDates(df):
@@ -131,6 +134,7 @@ def ActivityPerHourBoxPlot(df):
     return hours
 
 
+"""
 dates1, activity1 = DateActivity(df1)
 dates2, activity2 = DateActivity(df2)
 
@@ -197,7 +201,7 @@ ax6.xaxis.set_major_formatter(date_form)
 
 fig3.suptitle('Mean activity per year in Fosen in m/hr per date', fontsize=30)
 plt.tight_layout()
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 2.0/mean_activity_per_date_Fosen_aftercut2.0.png", dpi=500)
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 4.0/mean_activity_per_date_Fosen_aftercut4.0.png", dpi=500)
 
 
 dates1_2012, activity1_2012 = DateActivityPerYear(df1, 2012)
@@ -253,7 +257,7 @@ ax12.xaxis.set_major_formatter(date_form)
 
 fig4.suptitle('Mean activity per year in Tingvoll in m/hr per date', fontsize=30)
 plt.tight_layout()
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 2.0/mean_activity_per_date_Tingvoll_aftercut2.0.png", dpi=500)
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 4.0/mean_activity_per_date_Tingvoll_aftercut4.0.png", dpi=500)
 
 
 hours1, hourlyActivity1 = ActivityPerHour(df1)
@@ -270,7 +274,7 @@ plt.xticks(fontsize=20)
 plt.yticks(fontsize=25)
 ax13.xaxis.set_major_locator(plt.MaxNLocator(6))
 plt.tight_layout()
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 2.0/mean_activity_per_hour_Tingvoll_aftercut2.0.png", dpi=500)
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 4.0/mean_activity_per_hour_Tingvoll_aftercut4.0.png", dpi=500)
 
 
 # Plot of activity per hour in Fosen
@@ -284,8 +288,8 @@ plt.xticks(fontsize=20)
 plt.yticks(fontsize=25)
 ax14.xaxis.set_major_locator(plt.MaxNLocator(6))
 plt.tight_layout()
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 2.0/mean_activity_per_hour_Fosen_aftercut2.0.png", dpi=500)
-
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 4.0/mean_activity_per_hour_Fosen_aftercut4.0.png", dpi=500)
+"""
 
 boxHours1 = ActivityPerHourBoxPlot(df1)
 boxHours2 = ActivityPerHourBoxPlot(df2)
@@ -301,9 +305,9 @@ medianProps = dict(linewidth=2.5)
 plt.boxplot(boxHours1, showfliers=False, labels=labels, showmeans=True, medianprops=medianProps)
 plt.xticks(fontsize=20)
 plt.yticks(fontsize=20)
-ax15.set(ylim=(-15, 550))
+ax15.set(ylim=(-15, 520))
 plt.tight_layout()
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 2.0/boxplot_activity_per_hour_Fosen_aftercut2.0.png", dpi=500)
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 4.0/boxplot_activity_per_hour_Tingvoll_aftercut.png", dpi=500)
 
 # Boxplot of activity per hour Fosen
 fig8, ax16 = plt.subplots(figsize=(16, 8))
@@ -313,8 +317,11 @@ ax16.set_title('Mean activity per hour in Fosen', fontsize=40, pad=30)
 plt.boxplot(boxHours2, showfliers=False, labels=labels, showmeans=True, medianprops=medianProps)
 plt.xticks(fontsize=20)
 plt.yticks(fontsize=20)
-ax16.set(ylim=(-15, 550))
+ax16.set(ylim=(-15, 520))
 plt.tight_layout()
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 2.0/boxplot_activity_per_hour_Tingvoll_aftercut2.0.png", dpi=500)
+plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 4.0/boxplot_activity_per_hour_Fosen_aftercut.png", dpi=500)
 
 plt.show()
+
+print(df1['Haversine'].describe())
+print(df2['Haversine'].describe())

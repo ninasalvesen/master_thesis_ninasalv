@@ -29,7 +29,7 @@ def TimeIntervalFosen(df):
             a = True
 
         if df.at[i, 'Datetime'].year == 2018:
-            if df.at[i, 'Datetime'].month == 6 and df.at[i, 'Datetime'].day == 9:  # start date = 09.06.18
+            if df.at[i, 'Datetime'].month == 6 and df.at[i, 'Datetime'].day == 3:  # start date = 03.06.18
                 if temp == dataset:  # fail safe as to not delete every point that includes 09.06
                     df = df.drop(df.index[k:i])  # deletes rows k-i including k but not including i
                     df.reset_index(inplace=True, drop=True)
@@ -44,7 +44,7 @@ def TimeIntervalFosen(df):
                 continue
 
         if df.at[i, 'Datetime'].year == 2019:
-            if df.at[i, 'Datetime'].month == 6 and df.at[i, 'Datetime'].day == 7:  # start date = 07.06.19
+            if df.at[i, 'Datetime'].month == 6 and df.at[i, 'Datetime'].day == 3:  # start date = 03.06.19
                 if temp == dataset:
                     df = df.drop(df.index[k:i])
                     df.reset_index(inplace=True, drop=True)
@@ -72,7 +72,7 @@ def TimeIntervalFosen(df):
                     continue
 
         if df.at[i, 'Datetime'].year == 2020:
-            if df.at[i, 'Datetime'].month == 6 and df.at[i, 'Datetime'].day == 16:  # start date = 16.06.18
+            if df.at[i, 'Datetime'].month == 6 and df.at[i, 'Datetime'].day == 3:  # start date = 03.06.18
                 if temp == dataset:
                     df = df.drop(df.index[k:i])
                     df.reset_index(inplace=True, drop=True)
@@ -106,7 +106,7 @@ def TimeIntervalTingvoll(df):
             i += 1
 
         if df.at[i, 'Datetime'].year == 2012:
-            if df.at[i, 'Datetime'].month == 6 and df.at[i, 'Datetime'].day == 10:  # start date = 10.06.12
+            if df.at[i, 'Datetime'].month == 6 and df.at[i, 'Datetime'].day == 9:  # start date = 09.06.12
                 if temp == dataset:
                     df = df.drop(df.index[k:i])
                     df.reset_index(inplace=True, drop=True)
@@ -129,7 +129,7 @@ def TimeIntervalTingvoll(df):
                         i = k
                         temp += 1
             if df.at[i, 'Farm'] == 'torjul':
-                if df.at[i, 'Datetime'].month == 6 and df.at[i, 'Datetime'].day == 16:  # start date torjul = 16.06.13
+                if df.at[i, 'Datetime'].month == 6 and df.at[i, 'Datetime'].day == 15:  # start date torjul = 15.06.13
                     if temp == dataset:
                         df = df.drop(df.index[k:i])
                         df.reset_index(inplace=True, drop=True)
@@ -145,7 +145,7 @@ def TimeIntervalTingvoll(df):
 
         if df.at[i, 'Datetime'].year == 2014:
             if df.at[i, 'Farm'] == 'koksvik':
-                if df.at[i, 'Datetime'].month == 6 and df.at[i, 'Datetime'].day == 13:  # start date koksvik = 13.06.14
+                if df.at[i, 'Datetime'].month == 6 and df.at[i, 'Datetime'].day == 5:  # start date koksvik = 05.06.14
                     if temp == dataset:
                         df = df.drop(df.index[k:i])
                         df.reset_index(inplace=True, drop=True)
@@ -190,13 +190,13 @@ def TimeIntervalTingvoll(df):
                 continue
 
         if df.at[i, 'Datetime'].year == 2016:
-            if df.at[i, 'Datetime'].month == 6 and df.at[i, 'Datetime'].day == 18:  # start date = 18.06.16
+            if df.at[i, 'Datetime'].month == 6 and df.at[i, 'Datetime'].day == 17:  # start date = 17.06.16
                 if temp == dataset:
                     df = df.drop(df.index[k:i])
                     df.reset_index(inplace=True, drop=True)
                     i = k
                     temp += 1
-            if df.at[i, 'Datetime'].month == 7 and df.at[i, 'Datetime'].day == 21:  # end date = 20.07.16
+            if df.at[i, 'Datetime'].month == 7 and df.at[i, 'Datetime'].day == 23:  # end date = 22.07.16
                 end = i + 1
                 while not pd.isnull(df.at[end, 'Datetime']) and end != len(df) - 1:
                     end += 1
@@ -211,7 +211,7 @@ def TimeIntervalTingvoll(df):
 
 
 df1 = TimeIntervalTingvoll(df1)
-df1.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V4 after cut.csv', index=False, sep=';')
+df1.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V5 first after cut 3.0.csv', index=False, sep=';')
 
 df2 = TimeIntervalFosen(df2)
-df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V5 after cut.csv', index=False, sep=';')
+df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V6 first after cut 3.0.csv', index=False, sep=';')
