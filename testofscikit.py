@@ -51,7 +51,7 @@ print(df1.describe())
 """
 # Elbow method of finding number of clusters for optimal kmeans
 sse = {}
-for k in range(1, 10):
+for k in range(1, 20):
     kmeans = KMeans(n_clusters=k, max_iter=1000).fit(df1)
     #data["clusters"] = kmeans.labels_
     #print(data["clusters"])
@@ -60,6 +60,7 @@ plt.figure()
 plt.plot(list(sse.keys()), list(sse.values()))
 plt.xlabel("Number of clusters")
 plt.ylabel("SSE")
+plt.grid(True)
 plt.show()
 """
 
@@ -73,13 +74,26 @@ clusters = kmeans.predict(df1)
 df1['cluster'] = clusters
 print(df1)
 
+fig1 = px.scatter_3d(df1, x='sin_time', y='cos_time', z='Haversine', color='cluster')
+fig1.update_traces(marker_size=2.5)
+fig1.update_layout(title='3D cluster rep. Tingvoll')
+fig1.show()
+
+
 """
+# try dimensionality reduction:
 pca = PCA(n_components=2)
 pca.fit(df1)
 df1_reduced = pd.DataFrame(pca.transform(df1), columns=['PC1', 'PC2'])
 df1_reduced['cluster'] = clusters
 print(df1_reduced)
 
+fig2 = px.scatter_3d(df1_reduced, x='sin_time', y='cos_time', z='Haversine', color='cluster')
+fig2.update_traces(marker_size=2.5)
+fig2.update_layout(title='2D cluster rep. Tingvoll')
+fig2.show()
+
+# eventuelt denne versjonen:
 cl0 = df1_reduced.loc[df1_reduced['cluster'] == 0]
 cl1 = df1_reduced.loc[df1_reduced['cluster'] == 1]
 cl2 = df1_reduced.loc[df1_reduced['cluster'] == 2]
@@ -93,44 +107,11 @@ plt.scatter(cl1['PC1'], cl1['PC2'], c='r')
 plt.scatter(cl2['PC1'], cl2['PC2'], c='c')
 plt.scatter(cl3['PC1'], cl3['PC2'], c='y')
 plt.show()
-"""
-
-cl0 = df1.loc[df1['cluster'] == 0]
-cl1 = df1.loc[df1['cluster'] == 1]
-cl2 = df1.loc[df1['cluster'] == 2]
-cl3 = df1.loc[df1['cluster'] == 3]
-fig2 = px.scatter_3d(df1, x='sin_time', y='cos_time', z='Haversine', color='cluster')
-fig2.update_traces(marker_size=2.5)
-fig2.update_layout(title="3D cluster rep. Tingvoll")
-fig2.show()
-
-
-"""
-plt.figure(figsize=(8, 8))
-plt.scatter(df1[:, 0], df1[:, 1], c=model.labels_.astype(float))
-plt.show()
 
 
 
 
-
-fig = plt.figure(figsize=(16, 10))
-ax = Axes3D(fig, auto_add_to_figure=False)
-fig.add_axes(ax)
-x = df1['sin_time']
-y = df1['cos_time']
-z = df1['Haversine']
-sc = ax.scatter(x, y, z, s=50, marker='o', alpha=1)
-cluster_center1 = ax.scatter(0.00982075, -0.76518385, 0.25713714, marker='o', c='r')
-cluster_center2 = ax.scatter(0.01065463, 0.82746879, -0.00152551, marker='o', c='r')
-cluster_center3 = ax.scatter(0.01019984, -0.41410931, -0.71671186, marker='o', c='r')
-ax.set_xlabel('sin_time', fontsize=20, labelpad=15)
-ax.set_ylabel('cos_time', fontsize=20, labelpad=15)
-ax.set_zlabel('Haversine', fontsize=20, labelpad=15)
-ax.set_title('Feature dependency Tingvoll', fontsize=40, pad=30)
-plt.show()
-"""
-
+# litt div greier av visualisering jeg har samlet opp
 #y_kmeans = kmeans.fit_predict(df[['Haversine', 'sin_time', 'cos_time']])
 #kmeans.fit(df[['Haversine', 'sin_time', 'cos_time']])
 
@@ -158,5 +139,9 @@ plt.show()
 #fig4.show()
 
 
-#line polar / polar plot seaborn
-# how to show results of the clustering, a graph or just numbers?
+# line polar / polar plot seaborn
+# finne hvilke verdier i Kmeans man bør kjøre som gir best resultat
+# lage fine grafer
+# finne en måte å måle performance på clusteringen?
+# finne hvilke tider på døgnet sin/cos-parene tilsvarer gitt avgrensingen i grafen (cl0.cos_max/min = ?, dette burde ha overlappende verdier i hver cluster)
+"""
