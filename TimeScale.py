@@ -17,6 +17,7 @@ df2['Datetime'] = pd.to_datetime(df2['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
 
 def GetMinutes(df):
+    # find minutes that has passed since midnight for each point
     i = 0
     df['minutes'] = 0
     while i < len(df):

@@ -8,7 +8,7 @@ from matplotlib import pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import seaborn as sns
 
-#sns.set_style('darkgrid')
+sns.set_style('darkgrid')
 
 df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V6 sinetime.csv',
                  delimiter=';', low_memory=False)
@@ -17,9 +17,10 @@ df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
 df1.dropna(subset=['Datetime'], inplace=True)
 df1.reset_index(inplace=True, drop=True)
-df1 = df1.drop(columns=['Datetime', 'Lat', 'Lon', 'X', 'Y', 'Data set', 'uniq.log', 'Farm', 'minutes'])
+df1['XY'] = np.sqrt(df1['X']**2 + df1['Y']**2)
+df1 = df1.drop(columns=['Datetime', 'Lat', 'X', 'Y', 'Lon', 'Data set', 'uniq.log', 'Farm', 'minutes'])
 
-print(df1)
+#print(df1)
 #print(df1.describe())
 
 
@@ -43,44 +44,47 @@ def Normalize(df, columns):  # normalizes the columns listed in the variable col
     return df
 
 
-df1 = Standardize(df1, ['Haversine'])
-df1 = Normalize(df1, ['Haversine'])
+df1 = Standardize(df1, ['Haversine', 'XY'])
+df1 = Normalize(df1, ['Haversine', 'XY'])
 print(df1)
-print(df1.describe())
+#print(df1.describe())
 
 """
 # Elbow method of finding number of clusters for optimal kmeans
 sse = {}
 for k in range(1, 20):
     kmeans = KMeans(n_clusters=k, max_iter=1000).fit(df1)
-    #data["clusters"] = kmeans.labels_
-    #print(data["clusters"])
+    df1['clusters'] = kmeans.labels_  # .labels_ er det samme som .predict når man putter inn samme datasett i predict
     sse[k] = kmeans.inertia_  # Inertia: Sum of distances of samples to their closest cluster center
-plt.figure()
+plt.figure(figsize=(16, 8))
 plt.plot(list(sse.keys()), list(sse.values()))
-plt.xlabel("Number of clusters")
-plt.ylabel("SSE")
+plt.title('Elbow method for finding number of clusters in Kmeans++', fontsize=35)
+plt.xlabel('Number of clusters', fontsize=25)
+plt.ylabel('SSE', fontsize=25)
 plt.grid(True)
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
+plt.tight_layout()
 plt.show()
-"""
+
 
 print('------')
-
-kmeans = KMeans(n_clusters=4, n_init=5, max_iter=300, tol=1e-04, random_state=None, init='k-means++')
+"""
+kmeans = KMeans(n_clusters=6, n_init=5, max_iter=300, tol=1e-04, random_state=None, init='k-means++')
 kmeans.fit(df1)
 centroids = kmeans.cluster_centers_
 print(centroids)
-clusters = kmeans.predict(df1)
+clusters = kmeans.labels_  # samme som kmeans.predict(df1)
 df1['cluster'] = clusters
 print(df1)
 
-fig1 = px.scatter_3d(df1, x='sin_time', y='cos_time', z='Haversine', color='cluster')
-fig1.update_traces(marker_size=2.5)
+fig1 = px.scatter_3d(df1, x='sin_time', y='cos_time', z='Haversine', size='XY', color='cluster', opacity=1)
+#fig1.update_traces(marker_size=2.5)
 fig1.update_layout(title='3D cluster rep. Tingvoll')
 fig1.show()
-
-
 """
+
+
 # try dimensionality reduction:
 pca = PCA(n_components=2)
 pca.fit(df1)
