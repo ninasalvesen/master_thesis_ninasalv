@@ -2,10 +2,9 @@ import plotly.express as px
 import pandas as pd
 import numpy as np
 from sklearn.cluster import KMeans
-from sklearn import preprocessing
+from sklearn import preprocessing, metrics
 from sklearn.decomposition import PCA
 from matplotlib import pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 import seaborn as sns
 
 sns.set_style('darkgrid')
@@ -49,7 +48,8 @@ df1 = Normalize(df1, ['Haversine', 'XY'])
 print(df1)
 #print(df1.describe())
 
-"""
+
+
 # Elbow method of finding number of clusters for optimal kmeans
 sse = {}
 for k in range(1, 20):
@@ -57,95 +57,101 @@ for k in range(1, 20):
     df1['clusters'] = kmeans.labels_  # .labels_ er det samme som .predict når man putter inn samme datasett i predict
     sse[k] = kmeans.inertia_  # Inertia: Sum of distances of samples to their closest cluster center
 plt.figure(figsize=(16, 8))
-plt.plot(list(sse.keys()), list(sse.values()))
-plt.title('Elbow method for finding number of clusters in Kmeans++', fontsize=35)
-plt.xlabel('Number of clusters', fontsize=25)
-plt.ylabel('SSE', fontsize=25)
+plt.plot(list(sse.keys()), list(sse.values()))  # gjør dette til ditt eget så det ikke kan plagieres?
+plt.title('Elbow method for finding number of clusters in Kmeans++', fontsize=35, pad=15)
+plt.xlabel('Number of clusters', fontsize=25, labelpad=15)
+plt.ylabel('SSE', fontsize=25, labelpad=15)
 plt.grid(True)
 plt.xticks(fontsize=20)
 plt.yticks(fontsize=20)
 plt.tight_layout()
+#plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 4.0/elbow_kmeans_tingvoll.png", dpi=500)
 plt.show()
+# optimal k=6
 
-
-print('------')
-"""
-kmeans = KMeans(n_clusters=6, n_init=5, max_iter=300, tol=1e-04, random_state=None, init='k-means++')
+kmeans = KMeans(n_clusters=6)
+# forklaring på hver iterasjon og toleranse + center shift: verbose=2 i Kmeans
 kmeans.fit(df1)
 centroids = kmeans.cluster_centers_
 print(centroids)
 clusters = kmeans.labels_  # samme som kmeans.predict(df1)
 df1['cluster'] = clusters
 print(df1)
+print('inertia:', kmeans.inertia_)
+print('iterations:', kmeans.n_iter_)
+print('n features:', kmeans.n_features_in_)
+print('features:', kmeans.feature_names_in_)
+# print('Silhouette score:', metrics.silhouette_score(df1, clusters))  
+# kjører veldig lenge O(n**2), ikke bruk på så mye data
 
 fig1 = px.scatter_3d(df1, x='sin_time', y='cos_time', z='Haversine', size='XY', color='cluster', opacity=1)
-#fig1.update_traces(marker_size=2.5)
 fig1.update_layout(title='3D cluster rep. Tingvoll')
 fig1.show()
-"""
 
 
-# try dimensionality reduction:
+
+# try dimensionality reduction with PCA:
+
+# first test what dimension to use
+pca = PCA()
+pca.fit(df1)
+print(pca.explained_variance_ratio_)
+plt.figure(figsize=(16, 8))
+plt.plot(range(1, 5), pca.explained_variance_ratio_.cumsum(), marker='o', linestyle='--')
+plt.title('Explained variance by number of features', fontsize=35, pad=15)
+plt.xlabel('Number of features', fontsize=25, labelpad=15)
+plt.ylabel('Cumulative explained variance', fontsize=25, labelpad=15)
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
+plt.tight_layout()
+#plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 4.0/PCA_feature_variance_tingvoll.png", dpi=500)
+plt.show()
+# bør holde ca. 0.8 av variansen, her bør dimensjonen bli 2
+
 pca = PCA(n_components=2)
 pca.fit(df1)
 df1_reduced = pd.DataFrame(pca.transform(df1), columns=['PC1', 'PC2'])
+
+print(df1_reduced)
+sse = {}
+for k in range(1, 20):
+    print(k)
+    kmeans = KMeans(n_clusters=k, max_iter=1000).fit(df1_reduced)
+    df1_reduced['clusters'] = kmeans.labels_  # .labels_ er det samme som .predict når man putter inn samme datasett i predict
+    sse[k] = kmeans.inertia_  # Inertia: Sum of distances of samples to their closest cluster center
+plt.figure(figsize=(16, 8))
+plt.plot(list(sse.keys()), list(sse.values()))
+plt.title('Elbow method for finding number of clusters in Kmeans++', fontsize=35, pad=15)
+plt.xlabel('Number of clusters', fontsize=25, labelpad=15)
+plt.ylabel('SSE', fontsize=25, labelpad=15)
+plt.grid(True)
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
+plt.tight_layout()
+#plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 4.0/elbow_kmeans_PCA_tingvoll.png", dpi=500)
+plt.show()
+# optimal k=4
+
+kmeans = KMeans(n_clusters=4)
+kmeans.fit(df1_reduced)
+centroids = kmeans.cluster_centers_
+print(centroids)
+print(centroids[0])
+clusters = kmeans.labels_
 df1_reduced['cluster'] = clusters
 print(df1_reduced)
 
-fig2 = px.scatter_3d(df1_reduced, x='sin_time', y='cos_time', z='Haversine', color='cluster')
-fig2.update_traces(marker_size=2.5)
-fig2.update_layout(title='2D cluster rep. Tingvoll')
-fig2.show()
-
-# eventuelt denne versjonen:
-cl0 = df1_reduced.loc[df1_reduced['cluster'] == 0]
-cl1 = df1_reduced.loc[df1_reduced['cluster'] == 1]
-cl2 = df1_reduced.loc[df1_reduced['cluster'] == 2]
-cl3 = df1_reduced.loc[df1_reduced['cluster'] == 3]
-print(cl0)
-print(cl2)
-
-plt.figure(figsize=(10, 10))
-plt.scatter(cl0['PC1'], cl0['PC2'], c='b')
-plt.scatter(cl1['PC1'], cl1['PC2'], c='r')
-plt.scatter(cl2['PC1'], cl2['PC2'], c='c')
-plt.scatter(cl3['PC1'], cl3['PC2'], c='y')
+plt.figure(figsize=(12, 8))
+sns.scatterplot(x=df1_reduced['PC1'], y=df1_reduced['PC2'], hue=df1_reduced['cluster'], palette=['g', 'r', 'c', 'm'])
+plt.scatter(centroids[:, 0], centroids[:, 1], color='k', marker='x')
+plt.title('Kmeans clusters with PCA dimension reduction', fontsize=35, pad=15)
+plt.xlabel('PC1', fontsize=25, labelpad=15)
+plt.ylabel('PC2', fontsize=25, labelpad=15)
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
+plt.tight_layout()
+#plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 4.0/kmeans_PCA_tingvoll.png", dpi=500)
 plt.show()
 
-
-
-
-# litt div greier av visualisering jeg har samlet opp
-#y_kmeans = kmeans.fit_predict(df[['Haversine', 'sin_time', 'cos_time']])
-#kmeans.fit(df[['Haversine', 'sin_time', 'cos_time']])
-
-#fig = px.scatter_matrix(df1, width=1400, height=1400, title='Scatter matrix of features in Tingvoll')
-#fig.show()
-
-
-
-#plt.scatter(df['cos_time'], df['Haversine'])
-#plt.show()
-
-#fig1 = px.scatter(df, x="sin_time", y="cos_time", size="Haversine")
-#fig1.update_layout(title="3 Features Representation")
-#fig1.show()
-
-#fig2 = px.scatter_3d(df1, x="sin_time", y="cos_time", z="Haversine")
-#fig2.update_layout(title="3 Features Representation 3D")
-#fig2.show()
-
-#clusters = pd.DataFrame(df, columns=df.columns)
-#clusters['label'] = kmeans.labels_
-#polar = clusters.groupby("label").mean().reset_index()
-#polar = pd.melt(polar, id_vars=["label"])
-#fig4 = px.line_polar(polar, r="value", theta="variable", color="label", line_close=True, height=800, width=1400)
-#fig4.show()
-
-
-# line polar / polar plot seaborn
-# finne hvilke verdier i Kmeans man bør kjøre som gir best resultat
-# lage fine grafer
-# finne en måte å måle performance på clusteringen?
-# finne hvilke tider på døgnet sin/cos-parene tilsvarer gitt avgrensingen i grafen (cl0.cos_max/min = ?, dette burde ha overlappende verdier i hver cluster)
-"""
+#df1_reduced['cluster'] = clusters
+#print(df1_reduced)
