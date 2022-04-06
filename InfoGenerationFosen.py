@@ -11,9 +11,10 @@ df2['uniq.log'] = df2['Telespor_id'].astype(str) + '_' + df2['yr'].astype(str)
 df2['uniq.log_mor'] = df2['M_Telespor_id'].astype(str) + '_' + df2['yr'].astype(str)
 
 df3 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Informasjon datasett Fosen.csv', delimiter=';', encoding='latin-1')
+
+df4 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Informasjon datasett Fosen after cut 4.0.csv', delimiter=';', encoding='latin-1')
 #df3['i, slutt'] = np.nan
-print(df2.head())
-print(df3.head())
+
 
 sett = 0
 i = 0
@@ -52,4 +53,32 @@ while i < len(df):
         print("Reached number: ", i)
 
 
-df3.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Informasjon datasett Fosen after cut 4.0.csv', index=False, sep=';')
+i = 0
+count_true = 0
+count_false = 0
+df3['alderstatus'] = ''
+
+while i < len(df3):
+    if df3.at[i, 'exists1']:
+        if df3.at[i, 'exists2']:
+            print('begge true', i + 1, df3.at[i, 'uniq.log'])
+            df3.at[i, 'alderstatus'] = 'ubestemt'
+            count_true += 1
+        else:
+            df3.at[i, 'alderstatus'] = 'lam'
+    if not df3.at[i, 'exists1']:
+        if not df3.at[i, 'exists2']:
+            print('begge false', i + 1, df3.at[i, 'uniq.log'])
+            df3.at[i, 'alderstatus'] = 'ubestemt'
+            count_false += 1
+        else:
+            df3.at[i, 'alderstatus'] = 'voksen'
+    i += 1
+
+print(count_true)
+print(count_false)
+
+#df3.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Informasjon datasett Fosen after cut 4.0.csv', index=False, sep=';')
+
+
+
