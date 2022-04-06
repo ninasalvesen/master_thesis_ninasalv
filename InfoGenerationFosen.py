@@ -12,7 +12,6 @@ df2['uniq.log_mor'] = df2['M_Telespor_id'].astype(str) + '_' + df2['yr'].astype(
 
 df3 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Informasjon datasett Fosen.csv', delimiter=';', encoding='latin-1')
 
-df4 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Informasjon datasett Fosen after cut 4.0.csv', delimiter=';', encoding='latin-1')
 #df3['i, slutt'] = np.nan
 
 
@@ -62,7 +61,7 @@ while i < len(df3):
     if df3.at[i, 'exists1']:
         if df3.at[i, 'exists2']:
             print('begge true', i + 1, df3.at[i, 'uniq.log'])
-            df3.at[i, 'alderstatus'] = 'ubestemt'
+            df3.at[i, 'alderstatus'] = 'lam'  # bekreftet av Jennifer at dupliserte sett er in fact lam
             count_true += 1
         else:
             df3.at[i, 'alderstatus'] = 'lam'
@@ -78,7 +77,7 @@ while i < len(df3):
 print(count_true)
 print(count_false)
 
-#df3.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Informasjon datasett Fosen after cut 4.0.csv', index=False, sep=';')
+#df3.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Informasjon datasett Fosen after cut 4.0 test.csv', index=False, sep=';')
 
 
 
