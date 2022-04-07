@@ -20,10 +20,10 @@ df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet 
 df2['Datetime'] = pd.to_datetime(df2['Datetime'], format='%d/%m/%Y %H:%M')
 
 
-#df1.dropna(subset=['Datetime'], inplace=True)
-#df1.reset_index(inplace=True, drop=True)
-#df1['XY'] = np.sqrt(df1['X']**2 + df1['Y']**2)
-#df1 = df1.drop(columns=['Datetime', 'Lat', 'X', 'Y', 'Lon', 'Data set', 'uniq.log', 'Farm', 'minutes'])
+df1.dropna(subset=['Datetime'], inplace=True)
+df1.reset_index(inplace=True, drop=True)
+df1['XY'] = np.sqrt(df1['X']**2 + df1['Y']**2)
+df1 = df1.drop(columns=['Datetime', 'Lat', 'X', 'Y', 'Lon', 'Data set', 'uniq.log', 'Farm', 'minutes'])
 
 df2.dropna(subset=['Datetime'], inplace=True)
 df2.reset_index(inplace=True, drop=True)
