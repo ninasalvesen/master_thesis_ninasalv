@@ -1,16 +1,16 @@
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V6 after cut 4.0.csv', delimiter=';')
+df = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V9 uten_feilsett.csv', delimiter=';')
 print(df.head())
-df['Datetime'] = pd.to_datetime(df['Datetime'], format='%d/%m/%Y %H:%M')
+df['Datetime'] = pd.to_datetime(df['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
 df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/NIBIO_Telespor_lamsøye.csv', delimiter=';', encoding='latin-1')
 
 df2['uniq.log'] = df2['Telespor_id'].astype(str) + '_' + df2['yr'].astype(str)
 df2['uniq.log_mor'] = df2['M_Telespor_id'].astype(str) + '_' + df2['yr'].astype(str)
 
-df3 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Informasjon datasett Fosen.csv', delimiter=';', encoding='latin-1')
+df3 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Informasjon datasett Fosen mal.csv', delimiter=';')
 
 #df3['i, slutt'] = np.nan
 
@@ -27,10 +27,10 @@ while i < len(df):
 
         if df3.at[df3[df3['uniq.log'] == df3.at[sett, 'uniq.log']].index.values[0], 'exists1']:
             index = df2[df2['uniq.log'] == df3.at[sett, 'uniq.log']].index.values[0]
-            df3.at[sett, 'rase'] = df2.at[index, 'Rase']
+            df3.at[sett, 'rase'] = df2.at[index, 'Race']
         if df3.at[df3[df3['uniq.log'] == df3.at[sett, 'uniq.log']].index.values[0], 'exists2']:
             index = df2[df2['uniq.log_mor'] == df3.at[sett, 'uniq.log']].index.values[0]
-            df3.at[sett, 'rase'] = df2.at[index, 'Rase']
+            df3.at[sett, 'rase'] = df2.at[index, 'Race']
 
         if sett > 0:
             df3.at[sett - 1, 'Slutt'] = df.at[i - 1, 'Datetime']
@@ -77,7 +77,7 @@ while i < len(df3):
 print(count_true)
 print(count_false)
 
-#df3.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Informasjon datasett Fosen after cut 4.0 test.csv', index=False, sep=';')
+df3.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Informasjon datasett Fosen after cut 5.0.csv', index=False, sep=';')
 
 
 
