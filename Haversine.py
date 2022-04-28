@@ -37,9 +37,11 @@ def insert_speed(df):
         if (i % 10000) == 0:
             # check progress against number of iterations
             print("Reached number: ", i)
+
         if pd.isnull(df.at[i, 'Datetime']):
             i += 2  # start the next check on the next data set in the second point
             continue
+
         dist = haversine(df.at[i, 'Lat'], df.at[i, 'Lon'], df.at[i - 1, 'Lat'], df.at[i - 1, 'Lon'])  # in meters
         time = ((df.at[i, 'Datetime'] - df.at[i - 1, 'Datetime']).total_seconds() / (60 * 60))  # in hour(s)
         speed = dist / time  # in m/hr
@@ -103,13 +105,13 @@ def dist_check(df, dist_max):  # imputes average points where the distance is to
     return df
 
 
-df1 = insert_speed(df1)
-df1 = dist_check(df1, 15000)
-df1 = insert_speed(df1)  # update velocity as final check
+#df1 = insert_speed(df1)
+#df1 = dist_check(df1, 15000)
+#df1 = insert_speed(df1)  # update velocity as final check
 
-df2 = insert_speed(df2)
-df2 = dist_check(df2, 15000)
-df2 = insert_speed(df2)  # update velocity as final check
+#df2 = insert_speed(df2)
+#df2 = dist_check(df2, 15000)
+#df2 = insert_speed(df2)  # update velocity as final check
 
-df1.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V4 after cut 2.0.csv', index=False, sep=';')
-df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V5 after cut 2.0.csv', index=False, sep=';')
+#df1.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V4 after cut 2.0.csv', index=False, sep=';')
+#df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V5 after cut 2.0.csv', index=False, sep=';')

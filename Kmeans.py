@@ -40,8 +40,8 @@ def Standardize(df, columns):  # standardizes the columns listed in the variable
     return df
 
 
-def Normalize(df, columns):  # normalizes the columns listed in the variable columns
-    scaler = preprocessing.MinMaxScaler()
+def Normalize(df, columns, a, b):  # normalizes the columns listed in the variable columns
+    scaler = preprocessing.MinMaxScaler(feature_range=(a, b))
     for i in range(len(columns)):
         column = np.array(df[columns[i]]).reshape(-1, 1)
         scaled = pd.DataFrame(scaler.fit_transform(column), columns=[columns[i]])
@@ -67,7 +67,7 @@ def ElbowMethod(df, fig=False):
     plt.yticks(fontsize=20)
     plt.tight_layout()
     if fig:
-        plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 4.0/kmeans/fosen_elbow_kmeans_tessst.png", dpi=500)
+        plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 4.0/kmeans/tingvoll_elbow_kmeans_tessst.png", dpi=500)
     plt.show()
 
 
@@ -84,13 +84,14 @@ def Kmeans(df, n_clusters):
     print('iterations:', kmeans.n_iter_)
     print('n features:', kmeans.n_features_in_)
     print('features:', kmeans.feature_names_in_)
+
     # print('Silhouette score:', metrics.silhouette_score(df1, clusters))
     # kjører veldig lenge O(n**2), ikke bruk på så mye data
 
     fig = px.scatter_3d(df, x='sin_time', y='cos_time', z='Haversine', color='cluster', opacity=1)
+    fig.update_traces(marker=dict(size=5), selector=dict(mode='markers'))
     #fig = px.scatter_3d(df, x='sin_time', y='cos_time', z='Haversine', size='XY', color='cluster', opacity=1)
     fig.update_layout(title='3D cluster rep. Tingvoll')
-    fig.update_traces(marker=dict(size=5, line=dict(width=1, color='white')), selector=dict(mode='markers'))
     fig.show()
 
 
@@ -164,13 +165,14 @@ def KmeansPCA(df_reduced, n_clusters, fig=False):
 
 
 # TINGVOLL:
-#df1 = Standardize(df1, ['Haversine', 'XY'])
-#df1 = Normalize(df1, ['Haversine', 'XY'])
-#print(df1)
 #print(df1.describe())
+#df1 = Standardize(df1, ['Haversine', 'XY'])
+#df1 = Normalize(df1, ['Haversine', 'XY'], -1, 1)
+#print(df1.describe())
+#print(df1)
 
-#ElbowMethod(df1, False)  # k=6
-#Kmeans(df1, 6)
+#ElbowMethod(df1, False)  # k=6, k=4
+#Kmeans(df1, 4)
 #FindDimension(df1, 4, False)  # n=2
 #df1_reduced = ElbowPCA(df1, 2, False)  # k=4
 #KmeansPCA(df1_reduced, 4, False)

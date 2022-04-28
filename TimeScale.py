@@ -16,7 +16,7 @@ df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet 
 df2['Datetime'] = pd.to_datetime(df2['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
 
-def GetMinutes(df):
+def TrigTime(df):
     # find minutes that has passed since midnight for each point
     i = 0
     df['minutes'] = 0
@@ -28,14 +28,15 @@ def GetMinutes(df):
         df.at[i, 'minutes'] = (df.at[i, 'Datetime'] - df.at[i, 'Datetime'].replace(hour=0, minute=0, second=0, microsecond=0)).total_seconds() / (60)
         i += 1
 
+    # transform into sine and cosine values
     minutes_in_day = 24 * 60
     df['sin_time'] = np.sin(2 * np.pi * df.minutes / minutes_in_day)
     df['cos_time'] = np.cos(2 * np.pi * df.minutes / minutes_in_day)
     return df
 
 
-#df1 = GetMinutes(df1)
-#df2 = GetMinutes(df2)
+#df1 = TrigTime(df1)
+#df2 = TrigTime(df2)
 
 #df1.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V6 sinetime.csv', index=False, sep=';')
 #df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V7 sinetime.csv', index=False, sep=';')
