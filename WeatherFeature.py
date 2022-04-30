@@ -69,7 +69,8 @@ def ImputeTemp(df):
         try:
             if pd.isnull(df.at[i, 'Temp']):
                 df.at[i, 'Temp'] = (df.at[i - 1, 'Temp'] + df.at[i + 1, 'Temp']) / 2
-        except:
+        except Exception as e:
+            print(e)
             print(i, df.at[i, 'Datetime'])
             print(df.at[i - 1, 'Temp'])
             print(df.at[i + 1, 'Temp'])
