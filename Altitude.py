@@ -25,9 +25,7 @@ def Elevation(lat, long, i):
     with urlopen(query) as f:
         tree = ET.parse(f)
         root = tree.getroot()
-        elevation = float(root.findall(f".//{parsing}Data/*")[0].text)
-        #print(f"Elevation is: {elevation} i is: {i}")
-        return elevation
+        return float(root.findall(f".//{parsing}Data/*")[0].text)
 
 
 
@@ -50,7 +48,8 @@ def InsertAltitude(df, start, stopp):
         except Exception as e:
             exceptions += 1
             print(e)
-
+        if i == 50:
+            print(df.head(50))
         i += 1
     print('there were', exceptions, 'exceptions')
 
