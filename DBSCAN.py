@@ -4,6 +4,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from sklearn.cluster import DBSCAN
 import seaborn as sns
+from Kmeans import Standardize, Normalize
 
 df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V9 med temp.csv',
                  delimiter=';', low_memory=False)
@@ -12,22 +13,43 @@ df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
 print(df1)
 
-"""
 
+# removing empty rows at the beginning of each set
 df1.dropna(subset=['Datetime'], inplace=True)
 df1.reset_index(inplace=True, drop=True)
-df1['XY'] = np.sqrt(df1['X']**2 + df1['Y']**2)
-df1 = df1.drop(columns=['Datetime', 'Lat', 'X', 'Y', 'Lon', 'Data set', 'uniq.log', 'Farm', 'minutes'])
 
-epsilon = 1
-min_samples = 15
+# chose which features to include
+#df1['XY'] = np.sqrt(df1['X']**2 + df1['Y']**2)
+df1 = df1.drop(columns=['Datetime', 'Lat', 'X', 'Y', 'Lon', 'Data set', 'uniq.log', 'Farm', 'minutes',
+                        'age', 'n_lambs', 'race', 'besetning', 'Temp'])
+print(df1)
 
-db = DBSCAN(eps=epsilon, min_samples=min_samples).fit(df1)
-labels = db.labels_
+def dbscan(df, epsilon, min):
+    print('hei')
+    db = DBSCAN(eps=epsilon, min_samples=min).fit(df1)
+    print('test')
+    clusters = db.labels_
+    df['clusters'] = clusters
 
-no_clusters = len(np.unique(labels))
-no_noise = np.sum(np.array(labels) == -1, axis=0)
+    print('n features:', db.n_features_in_)
+    print('features:', db.feature_names_in_)
 
-print('Estimated no. of clusters: %d' % no_clusters)
-print('Estimated no. of noise points: %d' % no_noise)
-"""
+    no_clusters = len(np.unique(labels))
+    no_noise = np.sum(np.array(labels) == -1, axis=0)
+
+    print('Estimated no. of clusters: %d' % no_clusters)
+    print('Estimated no. of noise points: %d' % no_noise)
+
+    fig = px.scatter_3d(df, x='sin_time', y='cos_time', z='Haversine', color='cluster', opacity=1)
+    fig.update_traces(marker=dict(size=5), selector=dict(mode='markers'))
+    # fig = px.scatter_3d(df, x='sin_time', y='cos_time', z='Haversine', size='XY', color='cluster', opacity=1)
+    fig.update_layout(title='3D cluster rep. Tingvoll DBSCAN')
+    fig.show()
+
+
+
+# Tingvoll
+df1 = Standardize(df1, ['Haversine'])
+df1 = Normalize(df1, ['Haversine'], -1, 1)
+#print(df1.describe())
+dbscan(df1, 1, 15)
