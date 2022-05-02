@@ -6,7 +6,7 @@ from sklearn.cluster import DBSCAN
 from sklearn.neighbors import NearestNeighbors
 from Kmeans import Standardize, Normalize
 import seaborn as sns
-
+"""
 df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V9 med temp.csv',
                  delimiter=';', low_memory=False)
 
@@ -22,6 +22,14 @@ df1.reset_index(inplace=True, drop=True)
 df1 = df1.drop(columns=['Datetime', 'Lat', 'X', 'Y', 'Lon', 'Data set', 'uniq.log', 'Farm', 'minutes',
                         'race', 'besetning'])
 print(df1)
+"""
+df_tot_gammel = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Gammel_rase.csv', delimiter=';', low_memory=False)
+df_tot_ny = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Ny_rase.csv', delimiter=';', low_memory=False)
+df_tot_ny = df_tot_ny.drop(columns=['Datetime', 'uniq.log', 'race', 'besetning'])
+df_tot_gammel = df_tot_gammel.drop(columns=['Datetime', 'uniq.log', 'race', 'besetning'])
+
+#print(df_tot_gammel['Haversine'].describe())
+#print(df_tot_ny['Haversine'].describe())
 
 
 def dbscan(df, epsilon, min, fig=False):
@@ -51,8 +59,8 @@ def dbscan(df, epsilon, min, fig=False):
 # Tingvoll
 #pd.plotting.scatter_matrix(df1)
 #plt.show()
-df1 = Standardize(df1, ['Haversine', 'age', 'n_lambs', 'Temp'])
-df1 = Normalize(df1, ['Haversine', 'age', 'n_lambs', 'Temp'], -1, 1)
+#df1 = Standardize(df1, ['Haversine', 'age', 'n_lambs', 'Temp'])
+#df1 = Normalize(df1, ['Haversine', 'age', 'n_lambs', 'Temp'], -1, 1)
 #print(df1.describe())
 #print(df1)
 
@@ -76,6 +84,7 @@ def epsPlot(df, n, r, fig=False):
         plt.show()
 
 
+# Tingvoll
 #k = 2 * df1.shape[-1] - 1
 #epsPlot(df1, k, 1)
 #dbscan(df1, 0.2, 12, True)
@@ -84,6 +93,41 @@ def epsPlot(df, n, r, fig=False):
 #print(df_noise.describe())
 #corr = df1.corr()
 #sns.heatmap(corr)
+
+# Gammel rase
+#print(df_tot_gammel.columns)
+df_tot_gammel = Standardize(df_tot_gammel, ['Haversine', 'age', 'n_lambs', 'Temp'])
+df_tot_gammel = Normalize(df_tot_gammel, ['Haversine', 'age', 'n_lambs', 'Temp'], -1, 1)
+
+#k = 2 * df_tot_gammel.shape[-1] - 1
+#epsPlot(df_tot_gammel, k, 1, True)
+dbscan(df_tot_gammel, 0.135, 11, False)
+df_noise = df_tot_gammel[df_tot_gammel['cluster'] == -1]
+df_noise = df_noise.drop(columns=['cluster', 'age', 'n_lambs'])
+print(df_noise.describe())
+print(len(df_noise[df_noise['Haversine'] < -0.894457]))
+
+plt.figure()
+plt.hist(df_noise['Haversine'], bins=50)
+plt.axvline(x=-0.894457)
+plt.show()
+#corr = df1.corr()
+#sns.heatmap(corr)
+"""
+# Ny rase
+df_tot_ny = Standardize(df_tot_ny, ['Haversine', 'age', 'n_lambs', 'Temp'])
+print(df_tot_ny['Haversine'].describe())
+df_tot_ny = Normalize(df_tot_ny, ['Haversine', 'age', 'n_lambs', 'Temp'], -1, 1)
+
+k = 2 * df_tot_ny.shape[-1] - 1
+#epsPlot(df_tot_ny, k, 1, True)
+dbscan(df_tot_ny, 0.135, 11)
+df_noise = df_tot_ny[df_tot_ny['cluster'] == -1]
+df_noise = df_noise.drop(columns=['cluster', 'age', 'n_lambs'])
+print(df_noise.describe())
+#corr = df1.corr()
+#sns.heatmap(corr)
+"""
 
 
 
