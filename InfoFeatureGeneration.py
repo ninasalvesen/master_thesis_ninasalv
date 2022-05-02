@@ -5,7 +5,7 @@ df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet d
 
 df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
-df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V7 sinetime.csv',
+df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V8 uten_feilsett.csv',
                  delimiter=';', low_memory=False)
 
 df2['Datetime'] = pd.to_datetime(df2['Datetime'], format='%Y-%m-%d %H:%M:%S')
@@ -26,7 +26,6 @@ df6 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Informa
 #df2['besetning'] = 0
 #df4['uniqlog'] = df4['Telespor_id'].astype(str) + '_' + df4['yr'].astype(str)
 #df4['uniqlog_mor'] = df4['M_Telespor_id'].astype(str) + '_' + df4['yr'].astype(str)
-# BESETNING?
 
 #TINGVOLL
 #df1['age'] = 0
@@ -105,7 +104,7 @@ def TingvollGenerate(df, df_ext, df_info):
 
 #FosenGenerate(df2, df4, df6)
 #print(df2)
-#df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V8 info_features.csv', index=False, sep=';')
+#df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V11 info_features.csv', index=False, sep=';')
 
 #TingvollGenerate(df1, df3, df5)
 #print(df1)
