@@ -25,8 +25,16 @@ print(df1)
 """
 df_tot_gammel = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Gammel_rase.csv', delimiter=';', low_memory=False)
 df_tot_ny = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Ny_rase.csv', delimiter=';', low_memory=False)
-df_tot_ny = df_tot_ny.drop(columns=['Datetime', 'uniq.log', 'race', 'besetning'])
-df_tot_gammel = df_tot_gammel.drop(columns=['Datetime', 'uniq.log', 'race', 'besetning'])
+df_tot = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Total.csv', delimiter=';', low_memory=False)
+df_tot_ny = df_tot_ny.drop(columns=['Datetime', 'race', 'besetning'])
+df_tot_gammel = df_tot_gammel.drop(columns=['Datetime', 'race', 'besetning'])
+df_tot = df_tot.drop(columns=['Datetime', 'race', 'uniq.log', 'besetning'])
+print(len(df_tot_gammel['uniq.log'].unique()))
+print(len(df_tot_ny['uniq.log'].unique()))
+print(df_tot_gammel['Haversine'].describe())
+print(df_tot_ny['Haversine'].describe())
+print(df_tot['Haversine'].describe())
+print(df_tot.columns)
 
 #print(df_tot_gammel['Haversine'].describe())
 #print(df_tot_ny['Haversine'].describe())
@@ -93,11 +101,11 @@ def epsPlot(df, n, r, fig=False):
 #print(df_noise.describe())
 #corr = df1.corr()
 #sns.heatmap(corr)
-
+"""
 # Gammel rase
 #print(df_tot_gammel.columns)
-df_tot_gammel = Standardize(df_tot_gammel, ['Haversine', 'age', 'n_lambs', 'Temp'])
-df_tot_gammel = Normalize(df_tot_gammel, ['Haversine', 'age', 'n_lambs', 'Temp'], -1, 1)
+#df_tot_gammel = Standardize(df_tot_gammel, ['Haversine', 'age', 'n_lambs', 'Temp'])
+#df_tot_gammel = Normalize(df_tot_gammel, ['Haversine', 'age', 'n_lambs', 'Temp'], -1, 1)
 
 #k = 2 * df_tot_gammel.shape[-1] - 1
 #epsPlot(df_tot_gammel, k, 1, True)
@@ -113,7 +121,7 @@ plt.axvline(x=-0.894457)
 plt.show()
 #corr = df1.corr()
 #sns.heatmap(corr)
-"""
+
 # Ny rase
 df_tot_ny = Standardize(df_tot_ny, ['Haversine', 'age', 'n_lambs', 'Temp'])
 print(df_tot_ny['Haversine'].describe())
@@ -128,6 +136,20 @@ print(df_noise.describe())
 #corr = df1.corr()
 #sns.heatmap(corr)
 """
+
+# Total
+df_tot = Standardize(df_tot, ['Haversine', 'age', 'n_lambs', 'Temp'])
+print(df_tot['Haversine'].describe())
+df_tot = Normalize(df_tot, ['Haversine', 'age', 'n_lambs', 'Temp'], -1, 1)
+
+k = 2 * df_tot.shape[-1] - 1
+#epsPlot(df_tot, k, 1, True)
+dbscan(df_tot, 0.135, 11)
+df_noise = df_tot[df_tot['cluster'] == -1]
+df_noise = df_noise.drop(columns=['cluster', 'age', 'n_lambs'])
+print(df_noise.describe())
+#corr = df1.corr()
+#sns.heatmap(corr)
 
 
 
