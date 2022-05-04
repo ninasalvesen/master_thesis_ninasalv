@@ -2,18 +2,17 @@ import pandas as pd
 import xml.etree.ElementTree as ET
 from urllib.request import urlopen
 from threading import Thread, Lock
-from concurrent.futures import ThreadPoolExecutor
 import time
 
 lock = Lock()
 
 time0 = time.time()
 
-df1 = pd.read_csv("/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V9 med temp.csv", delimiter=';',
+df1 = pd.read_csv("/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V10 altitude test.csv", delimiter=';',
                  dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
 
-df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y %m %d %H:%M:%S')
-df1['Altitude'] = None
+#df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y %m %d %H:%M:%S')
+#df1['Altitude'] = None
 
 print(df1)
 
@@ -28,12 +27,11 @@ def Elevation(lat, long, i):
         return float(root.findall(f".//{parsing}Data/*")[0].text)
 
 
-
 def InsertAltitude(df, start, stopp):
     exceptions = 0
     i = start
     while i < stopp:
-        if (i % 10) == 0:
+        if (i % 10000) == 0:
             print("Reached number: ", i, '--------')
 
         if pd.isnull(df.at[i, 'Datetime']):
@@ -48,8 +46,6 @@ def InsertAltitude(df, start, stopp):
         except Exception as e:
             exceptions += 1
             print(e)
-        if i == 50:
-            print(df.head(50))
         i += 1
     print('there were', exceptions, 'exceptions')
 
@@ -82,6 +78,9 @@ for j in threads:
     j.join()
 
 df1 = pd.concat([df_test1, df_test2, df_test3])
-df1.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V10 altitude test.csv', index=False, sep=';')
+df1.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V10 altitude.csv', index=False, sep=';')
+
 print('the program took ', time.time() - time0, 'seconds')
+df1.dropna(subset=['Datetime'], inplace=True)
+print(df1['Altitude'].isna().sum())
 
