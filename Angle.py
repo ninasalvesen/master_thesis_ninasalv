@@ -1,10 +1,9 @@
 import pandas as pd
 import numpy as np
 
-df1 = pd.read_csv("C:\\Users\\ovsal\\Documents\\Nina Master\\Samlet data Fosen V9 info_features med temp.csv", delimiter=';',
+df1 = pd.read_csv("/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V10 altitude.csv", delimiter=';',
                  dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
 
-df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y %m %d %H:%M:%S')
 df1['angle'] = 0.0
 
 print(df1)
@@ -35,3 +34,4 @@ def angle(df):
 
 angle(df1)
 print(df1)
+df1.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V11 angle.csv', index=False, sep=';')
