@@ -86,5 +86,12 @@ Transform the datetime-feature into a sine-cosine pair to represent time as a fe
 ### WeatherFeature.py ###
 External data on the temperature in Fosen and Tingvoll were collected from GeoNorge, and implemented as a feature for each point.
 
+## MachineLearning ##
+
+### DBSCAN.py ###
+Implementation of the DBSCAN machine learning clustering algorithm.
+
+### Kmeans.py ###
+Implementation of the Kmeans machine learning clustering algorithm.
 
 
