@@ -6,12 +6,12 @@ import numpy as np
 
 #df1['angle'] = 0.0
 
-df2 = pd.read_csv("/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Total Fosen med altitude.csv", delimiter=';',
-                 dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
+#df2 = pd.read_csv("/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Total Fosen med altitude.csv", delimiter=';',
+#                 dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
 
-df2['angle'] = 0.0
+#df2['angle'] = 0.0
 
-print(df2)
+#print(df2)
 
 
 def angle(df):
@@ -43,5 +43,6 @@ def angle(df):
 #df1.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V11 angle.csv', index=False, sep=';')
 
 #angle(df2)
-print(df2)
+#print(df2)
 #df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Total Fosen med angle.csv', index=False, sep=';')
+
