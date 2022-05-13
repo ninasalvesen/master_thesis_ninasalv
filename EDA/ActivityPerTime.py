@@ -6,8 +6,19 @@ from matplotlib.dates import DateFormatter
 
 sns.set_style('darkgrid')
 
-#df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V5 updated format2.csv', delimiter=';')
+df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V4 after cut 2.0.csv',
+                  delimiter=';', dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
+df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
+print(df1)
+
+df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V5 after cut 2.0.csv',
+                  delimiter=';')
+df2['Datetime'] = pd.to_datetime(df2['Datetime'], format='%Y-%m-%d %H:%M:%S')
+
+print(df2)
+
+"""
 df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V5 after cut 4.0.csv', delimiter=';',
                   dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
 
@@ -16,7 +27,7 @@ df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%d/%m/%Y %H:%M')
 df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V6 after cut 4.0.csv',
                   delimiter=';')
 df2['Datetime'] = pd.to_datetime(df2['Datetime'], format='%d/%m/%Y %H:%M')
-
+"""
 
 def FindExtremeDates(df):
     df_copy = df.copy()  # make a copy so that the original dataframe is not altered
@@ -300,28 +311,30 @@ labels = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11'
 fig7, ax15 = plt.subplots(figsize=(16, 8))
 ax15.set_xlabel('Hour', fontsize=30, labelpad=20)
 ax15.set_ylabel('Velocity, m/hr', fontsize=30, labelpad=20)
-ax15.set_title('Mean activity per hour in Tingvoll', fontsize=40, pad=30)
+ax15.set_title('Mean activity per hour outliers in Tingvoll', fontsize=40, pad=30)
 medianProps = dict(linewidth=2.5)
-plt.boxplot(boxHours1, showfliers=False, labels=labels, showmeans=True, medianprops=medianProps)
+plt.boxplot(boxHours1, showfliers=True, labels=labels, showmeans=True, medianprops=medianProps)
 plt.xticks(fontsize=20)
 plt.yticks(fontsize=20)
-ax15.set(ylim=(-15, 520))
+ax15.set(ylim=(-15, 18000))
 plt.tight_layout()
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 4.0/boxplot_activity_per_hour_Tingvoll_aftercut.png", dpi=500)
+#plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/b4 cut/boxplot_fliers_activity_per_hour_Tingvoll_b4cut.png", dpi=500)
 
 # Boxplot of activity per hour Fosen
 fig8, ax16 = plt.subplots(figsize=(16, 8))
 ax16.set_xlabel('Hour', fontsize=30, labelpad=20)
 ax16.set_ylabel('Velocity, m/hr', fontsize=30, labelpad=20)
-ax16.set_title('Mean activity per hour in Fosen', fontsize=40, pad=30)
-plt.boxplot(boxHours2, showfliers=False, labels=labels, showmeans=True, medianprops=medianProps)
+ax16.set_title('Mean activity per hour outliers in Fosen', fontsize=40, pad=30)
+plt.boxplot(boxHours2, showfliers=True, labels=labels, showmeans=True, medianprops=medianProps)
 plt.xticks(fontsize=20)
 plt.yticks(fontsize=20)
-ax16.set(ylim=(-15, 520))
+ax16.set(ylim=(-15, 18000))
 plt.tight_layout()
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 4.0/boxplot_activity_per_hour_Fosen_aftercut.png", dpi=500)
+#plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/b4 cut/boxplot_fliers_activity_per_hour_Fosen_b4cut.png", dpi=500)
 
 plt.show()
 
 print(df1['Haversine'].describe())
 print(df2['Haversine'].describe())
+
+
