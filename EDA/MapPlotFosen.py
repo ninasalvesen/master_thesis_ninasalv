@@ -7,6 +7,7 @@ df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
 print(df1)
 
+
 def FindPlot(df, sett):
     lat = []
     long = []
@@ -39,12 +40,6 @@ def FindPlot(df, sett):
     print("extreme values: ", extreme_values)
     return lat, long
 
-"""
-figure1 = plt.imread(f"/Users/ninasalvesen/Documents/Sauedata/Bilder/Prosjektoppgave/figure_fosen_close.png")
-fig1 = [10.1856, 10.4740, 63.6959, 63.8074]
-figure2 = plt.imread(f"/Users/ninasalvesen/Documents/Sauedata/Bilder/Prosjektoppgave/figure_fosen_far.png")
-fig2 = [10.1720, 10.4604, 63.7823, 63.8934]
-"""
 
 figurebig = plt.imread(f"/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/figure_fosen_big.png")
 figbig = [10.1218, 10.6986, 63.7005, 63.9229]
@@ -61,8 +56,11 @@ ax.imshow(figurebig, zorder=0, extent=figbig, aspect="auto")
 ax.set_xlabel('Longitude', fontsize=30, labelpad=20)
 ax.set_ylabel('Latitude', fontsize=30, labelpad=20)
 ax.set_title('Sheep range map in Fosen', fontsize=40, pad=30)
+plt.xticks(fontsize=25)
+plt.yticks(fontsize=25)
 plt.grid("True")
-ax.legend(handles=[farm1, farm2, farm3])
-ax.legend(loc='lower right', frameon=True, prop={'size': 20})
+plt.legend(['Farm 1', 'Farm 2', 'Farm 3'], loc='lower right', prop={'size': 30}, frameon=True, markerscale=3)
 plt.tight_layout()
+#plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/01 Total/map_range_fosen.png", dpi=500)
+
 plt.show()

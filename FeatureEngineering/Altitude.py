@@ -3,10 +3,11 @@ import xml.etree.ElementTree as ET
 from urllib.request import urlopen
 from threading import Thread, Lock
 import time
+from FeatureEngineering import Haversine, Angle
 
-lock = Lock()
+#lock = Lock()
 
-time0 = time.time()
+#time0 = time.time()
 
 #df1 = pd.read_csv("/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V10 altitude test.csv", delimiter=';',
 #                 dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
@@ -101,5 +102,33 @@ def runner(df):
 #print('the program 2 took ', time.time() - time0, 'seconds')
 
 
+def CheckWrongAltitudes(df):
+    i = 0
+    while i < len(df):
+        if (i % 10000) == 0:
+            print("Reached number: ", i, '--------')
+
+        if pd.isnull(df.at[i, 'Datetime']):
+            i += 1  # start the next check on the next data set in the second point
+            continue
+
+        if df.at[i, 'Altitude'] < 0:
+            df = df.drop(df.index[i])
+            df.reset_index(inplace=True, drop=True)
+            continue
+
+        i += 1
+
+    Haversine.insert_speed(df)
+    Angle.angle(df)
+    return df
+
+
+df_test = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/Total begge med feil altitude.csv', sep=';',
+                      dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
+df_test['Datetime'] = pd.to_datetime(df_test['Datetime'], format='%Y-%m-%d %H:%M:%S')
+
+dfny = CheckWrongAltitudes(df_test)
+#dfny.to_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Samlet data begge test.csv', index=False, sep=';')
 
 
