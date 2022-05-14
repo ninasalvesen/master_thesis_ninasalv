@@ -1,9 +1,9 @@
 import pandas as pd
 
-df = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V5 after cut 4.0.csv',
+df = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Total Tingvoll med angle.csv',
                  delimiter=';', dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
 print(df.head())
-df['Datetime'] = pd.to_datetime(df['Datetime'], format='%d/%m/%Y %H:%M')
+df['Datetime'] = pd.to_datetime(df['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
 df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Informasjon datasett Tingvoll.csv', delimiter=';')
 df3 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Informasjon datasett Tingvoll after cut.csv', delimiter=';')
@@ -19,6 +19,7 @@ while i < len(df):
         df2.at[sett, 'Farm'] = df.at[i + 1, 'Farm']
         index = df3[df3['datasett'] == df.at[i + 1, 'uniq.log']].index.values[0]
         df2.at[sett, 'rase'] = df3.at[index, 'rase']
+        df2.at[sett, 'besetning'] = df.at[i + 1, 'besetning']
 
         if sett > 0:
             df2.at[sett - 1, 'Slutt'] = df.at[i - 1, 'Datetime']
@@ -38,4 +39,4 @@ while i < len(df):
         print("Reached number: ", i)
 
 
-df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Informasjon datasett Tingvoll after cut 4.0.csv', index=False, sep=';')
+df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Informasjon datasett Tingvoll final.csv', index=False, sep=';')

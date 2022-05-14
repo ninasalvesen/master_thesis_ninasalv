@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V9 uten_feilsett.csv', delimiter=';')
+df = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Total Fosen med angle.csv', delimiter=';')
 print(df.head())
 df['Datetime'] = pd.to_datetime(df['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
@@ -22,6 +22,7 @@ while i < len(df):
         df3.at[sett, 'Sett'] = sett + 1
         df3.at[sett, 'Start'] = df.at[i + 1, 'Datetime']
         df3.at[sett, 'uniq.log'] = df.at[i + 1, 'uniq.log']
+        df3.at[sett, 'besetning'] = df.at[i + 1, 'besetning']
         df3['exists1'] = df3['uniq.log'].isin(df2['uniq.log'])
         df3['exists2'] = df3['uniq.log'].isin(df2['uniq.log_mor'])
 
@@ -77,7 +78,7 @@ while i < len(df3):
 print(count_true)
 print(count_false)
 
-df3.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Informasjon datasett Fosen after cut 5.0.csv', index=False, sep=';')
+#df3.to_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Informasjon datasett Fosen after cut 6.0.csv', index=False, sep=';')
 
 
 

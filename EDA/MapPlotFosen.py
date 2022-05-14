@@ -1,52 +1,68 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-df = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V6 updated format.csv',
+df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Total Fosen med angle.csv',
                  delimiter=';')
-df['Datetime'] = pd.to_datetime(df['Datetime'], format='%Y-%m-%d %H:%M:%S')
+df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
-print(df.head())
+print(df1)
 
-lat = []
-long = []
-time = []
-dataset = 216
-check = 0
-i = 0
-while i < len(df):
-    if pd.isnull(df.at[i, 'Datetime']):
-        i += 1
-        check += 1
-
-    if dataset == check:
-        time.append(df.at[i, 'Datetime'])
-        lat.append(df.at[i, 'Lat'])
-        long.append(df.at[i, 'Lon'])
-        while pd.isnull(df.at[i, 'Data set']):
-            lat.append(df.at[i+1, 'Lat'])
-            long.append(df.at[i+1, 'Lon'])
+def FindPlot(df, sett):
+    lat = []
+    long = []
+    time = []
+    dataset = sett
+    check = 0
+    i = 0
+    while i < len(df):
+        if pd.isnull(df.at[i, 'Datetime']):
             i += 1
-            if i == (len(df) - 1):
-                time.append(df.at[i-1, 'Datetime'])
-                break
-        time.append(df.at[i-1, 'Datetime'])
-        break
-    i += 1
+            check += 1
 
-print("Time frame for the time spent on pastures: ", time)
-extreme_values = [min(long), max(long), min(lat), max(lat)]
-print("extreme values: ", extreme_values)
+        if dataset == check:
+            time.append(df.at[i, 'Datetime'])
+            lat.append(df.at[i, 'Lat'])
+            long.append(df.at[i, 'Lon'])
+            while pd.isnull(df.at[i, 'Data set']):
+                lat.append(df.at[i+1, 'Lat'])
+                long.append(df.at[i+1, 'Lon'])
+                i += 1
+                if i == (len(df) - 1):
+                    time.append(df.at[i-1, 'Datetime'])
+                    break
+            time.append(df.at[i-1, 'Datetime'])
+            break
+        i += 1
 
+    print("Time frame for the time spent on pastures: ", time)
+    extreme_values = [min(long), max(long), min(lat), max(lat)]
+    print("extreme values: ", extreme_values)
+    return lat, long
 
+"""
 figure1 = plt.imread(f"/Users/ninasalvesen/Documents/Sauedata/Bilder/Prosjektoppgave/figure_fosen_close.png")
 fig1 = [10.1856, 10.4740, 63.6959, 63.8074]
 figure2 = plt.imread(f"/Users/ninasalvesen/Documents/Sauedata/Bilder/Prosjektoppgave/figure_fosen_far.png")
 fig2 = [10.1720, 10.4604, 63.7823, 63.8934]
+"""
 
-fig, ax = plt.subplots()
-ax.scatter(long, lat, zorder=1, alpha=0.6, c="b", s=1)
-ax.imshow(figure1, zorder=0, extent=fig1, aspect="auto")
-plt.xlabel("Longitude")
-plt.ylabel("Latitude")
+figurebig = plt.imread(f"/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/figure_fosen_big.png")
+figbig = [10.1218, 10.6986, 63.7005, 63.9229]
+
+lat1, long1 = FindPlot(df1, 159)
+lat2, long2 = FindPlot(df1, 170)
+lat3, long3 = FindPlot(df1, 235)
+
+fig, ax = plt.subplots(figsize=(16, 16))
+farm1 = ax.scatter(long1, lat1, zorder=1, alpha=0.6, c="b", s=10)
+farm2 = ax.scatter(long2, lat2, zorder=1, alpha=0.6, c="r", s=10)
+farm3 = ax.scatter(long3, lat3, zorder=1, alpha=0.6, c="g", s=10)
+ax.imshow(figurebig, zorder=0, extent=figbig, aspect="auto")
+ax.set_xlabel('Longitude', fontsize=30, labelpad=20)
+ax.set_ylabel('Latitude', fontsize=30, labelpad=20)
+ax.set_title('Sheep range map in Fosen', fontsize=40, pad=30)
 plt.grid("True")
+ax.legend(handles=[farm1, farm2, farm3])
+ax.legend(loc='lower right', frameon=True, prop={'size': 20})
+plt.tight_layout()
 plt.show()
