@@ -47,6 +47,9 @@ The retrieved data came with extraneous information not useful for the data scie
 ### ActivityPerTime.py ###
 Uses the feature of velocity per hour (Haversine) to display the activity of the sheep per year, date and hour. Also make box plots to show statistical information on the activity per hour.
 
+### EDA.py ###
+Plots correlation plots between features in the form of a heatmap and a scatter pairplot matrix.
+
 ### InfoGenerationFosen.py ###
 Generates a csv-file with all the information on each sheep data set.
 
