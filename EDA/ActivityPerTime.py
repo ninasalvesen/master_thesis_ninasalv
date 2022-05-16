@@ -5,7 +5,7 @@ import seaborn as sns
 from matplotlib.dates import DateFormatter
 
 sns.set_style('darkgrid')
-
+"""
 df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V4 after cut 2.0.csv',
                   delimiter=';', dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
 df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
@@ -18,7 +18,7 @@ df2['Datetime'] = pd.to_datetime(df2['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
 print(df2)
 
-"""
+
 df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V5 after cut 4.0.csv', delimiter=';',
                   dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
 
@@ -28,6 +28,11 @@ df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet 
                   delimiter=';')
 df2['Datetime'] = pd.to_datetime(df2['Datetime'], format='%d/%m/%Y %H:%M')
 """
+df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/Total.csv',
+                  delimiter=';', dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
+df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
+df1.rename(columns={'Velocity':'Haversine'}, inplace=True)
+
 
 def FindExtremeDates(df):
     df_copy = df.copy()  # make a copy so that the original dataframe is not altered
@@ -272,7 +277,7 @@ plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 4.0/
 
 
 hours1, hourlyActivity1 = ActivityPerHour(df1)
-hours2, hourlyActivity2 = ActivityPerHour(df2)
+#hours2, hourlyActivity2 = ActivityPerHour(df2)
 
 # Plot of activity per hour in Tingvoll
 fig5, ax13 = plt.subplots(figsize=(16, 8))
@@ -285,7 +290,7 @@ plt.xticks(fontsize=20)
 plt.yticks(fontsize=25)
 ax13.xaxis.set_major_locator(plt.MaxNLocator(6))
 plt.tight_layout()
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 4.0/mean_activity_per_hour_Tingvoll_aftercut4.0.png", dpi=500)
+#plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 4.0/mean_activity_per_hour_Tingvoll_aftercut4.0.png", dpi=500)
 
 
 # Plot of activity per hour in Fosen
@@ -299,42 +304,70 @@ plt.xticks(fontsize=20)
 plt.yticks(fontsize=25)
 ax14.xaxis.set_major_locator(plt.MaxNLocator(6))
 plt.tight_layout()
-plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 4.0/mean_activity_per_hour_Fosen_aftercut4.0.png", dpi=500)
-"""
+#plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/after cut 4.0/mean_activity_per_hour_Fosen_aftercut4.0.png", dpi=500)
+
 
 boxHours1 = ActivityPerHourBoxPlot(df1)
-boxHours2 = ActivityPerHourBoxPlot(df2)
+#boxHours2 = ActivityPerHourBoxPlot(df2)
 labels = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17',
           '18', '19', '20', '21', '22', '23']
 
 # Boxplot of activity per hour in Tingvoll
 fig7, ax15 = plt.subplots(figsize=(16, 8))
 ax15.set_xlabel('Hour', fontsize=30, labelpad=20)
-ax15.set_ylabel('Velocity, m/hr', fontsize=30, labelpad=20)
-ax15.set_title('Mean activity per hour outliers in Tingvoll', fontsize=40, pad=30)
+ax15.set_ylabel('Velocity, m/h', fontsize=30, labelpad=20)
+ax15.set_title('Mean velocity per hour outliers', fontsize=40, pad=30)
 medianProps = dict(linewidth=2.5)
 plt.boxplot(boxHours1, showfliers=True, labels=labels, showmeans=True, medianprops=medianProps)
 plt.xticks(fontsize=20)
 plt.yticks(fontsize=20)
-ax15.set(ylim=(-15, 18000))
+ax15.set(ylim=(-10, 17000))
 plt.tight_layout()
-#plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/b4 cut/boxplot_fliers_activity_per_hour_Tingvoll_b4cut.png", dpi=500)
+#plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/01 Total/boxplot_fliers_velocity_total.png", dpi=500)
+
 
 # Boxplot of activity per hour Fosen
 fig8, ax16 = plt.subplots(figsize=(16, 8))
 ax16.set_xlabel('Hour', fontsize=30, labelpad=20)
 ax16.set_ylabel('Velocity, m/hr', fontsize=30, labelpad=20)
-ax16.set_title('Mean activity per hour outliers in Fosen', fontsize=40, pad=30)
-plt.boxplot(boxHours2, showfliers=True, labels=labels, showmeans=True, medianprops=medianProps)
+ax16.set_title('Mean activity per hour in Fosen', fontsize=40, pad=30)
+plt.boxplot(boxHours2, showfliers=False, labels=labels, showmeans=True, medianprops=medianProps)
 plt.xticks(fontsize=20)
 plt.yticks(fontsize=20)
-ax16.set(ylim=(-15, 18000))
+ax16.set(ylim=(-15, 500))
 plt.tight_layout()
 #plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/b4 cut/boxplot_fliers_activity_per_hour_Fosen_b4cut.png", dpi=500)
 
+
+# violin plot of the activity in bins
+boxHours1 = ActivityPerHourBoxPlot(df1)
+labels = ['04-09', '10-15', '16-21', '22-03']
+bins = [[], [], [], []]
+for i in range(len(boxHours1)):
+    if i <= 3 or i >= 22:
+        bins[3].extend(boxHours1[i])
+    if i <= 9 and i >= 4:
+        bins[0].extend(boxHours1[i])
+    if i <= 15 and i >= 10:
+        bins[1].extend(boxHours1[i])
+    if i <= 21 and i >= 16:
+        bins[2].extend(boxHours1[i])
+
+fig8, ax16 = plt.subplots(figsize=(16, 8))
+ax16.set_xlabel('Hour', fontsize=30, labelpad=20)
+ax16.set_ylabel('Velocity, m/h', fontsize=30, labelpad=20)
+ax16.set_title('Mean velocity per hour with distribution', fontsize=40, pad=30)
+plt.violinplot(bins, showextrema=False, showmeans=True)
+plt.xticks(fontsize=20, ticks=[1, 2, 3, 4], labels=labels)
+plt.yticks(fontsize=20)
+ax16.set(ylim=(-10, 1000))
+plt.tight_layout()
+#plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/01 Total/activity_violinplot.png", dpi=500)
+"""
+
 plt.show()
 
-print(df1['Haversine'].describe())
-print(df2['Haversine'].describe())
+#print(df1['Haversine'].describe())
+#print(df2['Haversine'].describe())
 
 

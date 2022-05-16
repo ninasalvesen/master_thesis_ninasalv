@@ -5,18 +5,18 @@ import seaborn as sns
 sns.set_style('darkgrid')
 
 
-df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/Total age ok.csv',
+df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/Total.csv',
                   sep=';', dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
 df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
 df1.dropna(subset=['Datetime'], inplace=True)
 df1.reset_index(inplace=True, drop=True)
 
-df1 = df1.drop(columns=['Datetime', 'Lat', 'Lon', 'Data set', 'uniq.log', 'race', 'besetning'])
+#df1 = df1.drop(columns=['Datetime', 'Lat', 'Lon', 'Data set', 'uniq.log', 'race', 'besetning'])
 
-df1.rename(columns={'Haversine':'Velocity'}, inplace=True)
-print(df1)
+#df1.rename(columns={'Haversine':'Velocity'}, inplace=True)
 print(df1.columns)
+
 
 plt.figure(figsize=(10, 5))
 corr = df1.corr()
