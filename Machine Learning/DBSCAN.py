@@ -6,8 +6,8 @@ from sklearn.cluster import DBSCAN
 from sklearn.neighbors import NearestNeighbors
 from Kmeans import Standardize, Normalize
 import seaborn as sns
-"""
-df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V9 med temp.csv',
+
+df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/Total.csv',
                  delimiter=';', low_memory=False)
 
 df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
@@ -16,32 +16,27 @@ df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
 # removing empty rows at the beginning of each set
 df1.dropna(subset=['Datetime'], inplace=True)
 df1.reset_index(inplace=True, drop=True)
+df_old = df1[df1['race'] != 'NKS']
+df_new = df1[df1['race'] == 'NKS']
 
 # chose which features to include
-#df1['XY'] = np.sqrt(df1['X']**2 + df1['Y']**2)
-df1 = df1.drop(columns=['Datetime', 'Lat', 'X', 'Y', 'Lon', 'Data set', 'uniq.log', 'Farm', 'minutes',
-                        'race', 'besetning'])
-print(df1)
-"""
-df_tot_gammel = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Gammel_rase.csv', delimiter=';', low_memory=False)
-df_tot_ny = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Ny_rase.csv', delimiter=';', low_memory=False)
-df_tot = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Total.csv', delimiter=';', low_memory=False)
-df_tot_ny = df_tot_ny.drop(columns=['Datetime', 'race', 'besetning'])
-df_tot_gammel = df_tot_gammel.drop(columns=['Datetime', 'race', 'besetning'])
-df_tot = df_tot.drop(columns=['Datetime', 'race', 'uniq.log', 'besetning'])
-print(len(df_tot_gammel['uniq.log'].unique()))
-print(len(df_tot_ny['uniq.log'].unique()))
-print(df_tot_gammel['Haversine'].describe())
-print(df_tot_ny['Haversine'].describe())
-print(df_tot['Haversine'].describe())
-print(df_tot.columns)
+df1 = df1.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race'])
 
-#print(df_tot_gammel['Haversine'].describe())
-#print(df_tot_ny['Haversine'].describe())
+df_old = df_old.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race'])
+
+df_new = df_new.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race'])
+
+#'Temp', 'angle', 'Altitude', 'n_lambs', 'age'
+#print(df1)
+
+#df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise.csv', delimiter=';', low_memory=False)
+#print(df2)
+#df2 = df2.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
+#print(df2.describe())
 
 
 def dbscan(df, epsilon, min, fig=False):
-    db = DBSCAN(eps=epsilon, min_samples=min)
+    db = DBSCAN(eps=epsilon, min_samples=min, n_jobs=-1)
     db.fit(df)
     clusters = db.labels_
     df['cluster'] = clusters
@@ -55,22 +50,23 @@ def dbscan(df, epsilon, min, fig=False):
     print('Estimated no. of clusters: %d' % no_clusters)
     print('Estimated no. of noise points: %d' % no_noise)
     if fig:
-        df['Temp'] = df['Temp'] + 1
-        fig = px.scatter_3d(df, x='sin_time', y='cos_time', z='Haversine', size='Temp', color='cluster', opacity=1)
+        #df['Temp'] = df['Temp'] + 1
+        #fig = px.scatter_3d(df, x='sin_time', y='cos_time', z='Velocity', color='cluster', opacity=1)
         #fig.update_traces(marker=dict(size=5), selector=dict(mode='markers'))
-        # fig = px.scatter_3d(df, x='sin_time', y='cos_time', z='Haversine', size='XY', color='cluster', opacity=1)
-        fig.update_layout(title='3D cluster rep. Tingvoll DBSCAN')
-        fig.show()
 
+        polar = df.groupby('cluster').mean().reset_index()
 
+        print(polar['Altitude'].describe(), polar['angle'].describe(), polar['Temp'].describe(), polar['Velocity'].describe())
+        print(polar['age'].describe(), polar['n_lambs'].describe(), polar['sin_time'].describe(), polar['cos_time'].describe())
 
-# Tingvoll
-#pd.plotting.scatter_matrix(df1)
-#plt.show()
-#df1 = Standardize(df1, ['Haversine', 'age', 'n_lambs', 'Temp'])
-#df1 = Normalize(df1, ['Haversine', 'age', 'n_lambs', 'Temp'], -1, 1)
-#print(df1.describe())
-#print(df1)
+        polar1 = df.groupby('cluster').std().reset_index()
+        polar = pd.melt(polar, id_vars=['cluster'])
+        polar1 = pd.melt(polar1, id_vars=['cluster'])
+        fig = px.line_polar(polar, r='value', theta='variable', color='cluster', line_close=True, height=800, width=1400)
+        fig1 = px.line_polar(polar1, r='value', theta='variable', color='cluster', line_close=True, height=800, width=1400)
+
+        #fig.show()
+        #fig1.show()
 
 
 # find eps by using elbow method by KNN
@@ -82,74 +78,37 @@ def epsPlot(df, n, r, fig=False):
 
     dist = np.sort(dist, axis=0)
     dist = dist[:, n - 1]
-
     if fig:
-        plt.figure(figsize=(8, 8))
+        plt.figure(figsize=(12, 8))
         plt.plot(dist)
-        plt.xlabel('Points in the dataset', fontsize=12)
-        plt.ylabel('Sorted {}-nearest neighbor distance'.format(n), fontsize=12)
-        plt.grid(True, linestyle="--", color='black', alpha=0.4)
+        plt.title('Epsilon plot, all data', fontsize=35, pad=15)
+        plt.xlabel('Points in the dataset', fontsize=25, labelpad=15)
+        plt.ylabel('Sorted {}-nearest neighbor distance'.format(n), fontsize=25, labelpad=15)
+        plt.grid(True)
+        plt.xticks(fontsize=20)
+        plt.yticks(fontsize=20)
+        plt.tight_layout()
+        #plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/01 Total/dbscan/epsplot_all.png", dpi=500)
         plt.show()
 
 
-# Tingvoll
+#df1 = Standardize(df1, ['Velocity', 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'])
+#df1 = Normalize(df1, ['Velocity', 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'], -1, 1)
+
 #k = 2 * df1.shape[-1] - 1
-#epsPlot(df1, k, 1)
-#dbscan(df1, 0.2, 12, True)
+#epsPlot(df1, k, 1, True)
+#dbscan(df1, 0.37, 16, True)
 #df_noise = df1[df1['cluster'] == -1]
 #df_noise = df_noise.drop(columns=['cluster'])
 #print(df_noise.describe())
-#corr = df1.corr()
-#sns.heatmap(corr)
+#df_noise.to_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise.csv', index=False, sep=';')
+
 """
-# Gammel rase
-#print(df_tot_gammel.columns)
-#df_tot_gammel = Standardize(df_tot_gammel, ['Haversine', 'age', 'n_lambs', 'Temp'])
-#df_tot_gammel = Normalize(df_tot_gammel, ['Haversine', 'age', 'n_lambs', 'Temp'], -1, 1)
-
-#k = 2 * df_tot_gammel.shape[-1] - 1
-#epsPlot(df_tot_gammel, k, 1, True)
-dbscan(df_tot_gammel, 0.135, 11, False)
-df_noise = df_tot_gammel[df_tot_gammel['cluster'] == -1]
-df_noise = df_noise.drop(columns=['cluster', 'age', 'n_lambs'])
-print(df_noise.describe())
 print(len(df_noise[df_noise['Haversine'] < -0.894457]))
-
 plt.figure()
 plt.hist(df_noise['Haversine'], bins=50)
 plt.axvline(x=-0.894457)
 plt.show()
-#corr = df1.corr()
-#sns.heatmap(corr)
-
-# Ny rase
-df_tot_ny = Standardize(df_tot_ny, ['Haversine', 'age', 'n_lambs', 'Temp'])
-print(df_tot_ny['Haversine'].describe())
-df_tot_ny = Normalize(df_tot_ny, ['Haversine', 'age', 'n_lambs', 'Temp'], -1, 1)
-
-k = 2 * df_tot_ny.shape[-1] - 1
-#epsPlot(df_tot_ny, k, 1, True)
-dbscan(df_tot_ny, 0.135, 11)
-df_noise = df_tot_ny[df_tot_ny['cluster'] == -1]
-df_noise = df_noise.drop(columns=['cluster', 'age', 'n_lambs'])
-print(df_noise.describe())
-#corr = df1.corr()
-#sns.heatmap(corr)
 """
-
-# Total
-df_tot = Standardize(df_tot, ['Haversine', 'age', 'n_lambs', 'Temp'])
-print(df_tot['Haversine'].describe())
-df_tot = Normalize(df_tot, ['Haversine', 'age', 'n_lambs', 'Temp'], -1, 1)
-
-k = 2 * df_tot.shape[-1] - 1
-#epsPlot(df_tot, k, 1, True)
-dbscan(df_tot, 0.135, 11)
-df_noise = df_tot[df_tot['cluster'] == -1]
-df_noise = df_noise.drop(columns=['cluster', 'age', 'n_lambs'])
-print(df_noise.describe())
-#corr = df1.corr()
-#sns.heatmap(corr)
-
 
 
