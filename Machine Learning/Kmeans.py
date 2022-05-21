@@ -13,14 +13,14 @@ df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endeli
                  delimiter=';', low_memory=False)
 
 df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
-print(df1.columns)
+#print(df1.columns)
 
 df1.dropna(subset=['Datetime'], inplace=True)
 df1.reset_index(inplace=True, drop=True)
 
 df1 = df1.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log',
                         'besetning', 'race'])
-print(df1.columns)
+#print(df1.columns)
 #'Temp', 'angle', 'Altitude', 'n_lambs', 'age'
 
 
@@ -168,29 +168,11 @@ def KmeansPCA(df_reduced, n_clusters, fig=False):
     plt.show()
 
 
-df1 = Standardize(df1, ['Velocity', 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'])
-df1 = Normalize(df1, ['Velocity', 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'], -1, 1)
+#df1 = Standardize(df1, ['Velocity', 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'])
+#df1 = Normalize(df1, ['Velocity', 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'], -1, 1)
 #ElbowMethod(df1, True)  # k=4
 #Kmeans(df1, 4)
 
 
-"""
-for i in range(len(df1)):
-    df1.at[i, 'month'] = df1.at[i, 'Datetime'].month
-
-df_early = df1[dftot['month'] < 7]
-df_late = df1[dftot['month'] >= 7]
-
-df_early_old = df_early[df_early['race'] != 'NKS']
-df_early_new = df_early[df_early['race'] == 'NKS']
-#df_early_old.to_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Gammel_rase tidlig sesong.csv', index=False, sep=';')
-#df_early_new.to_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Ny_rase tidlig sesong.csv', index=False, sep=';')
-
-df_late_old = df_late[df_late['race'] != 'NKS']
-df_late_new = df_late[df_late['race'] == 'NKS']
-#df_late_old.to_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Gammel_rase sen sesong.csv', index=False, sep=';')
-#df_late_new.to_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Ny_rase sen sesong.csv', index=False, sep=';')
-
-
 #print(len(df1['uniq.log'].unique()))
-"""
+

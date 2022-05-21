@@ -16,23 +16,74 @@ df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
 # removing empty rows at the beginning of each set
 df1.dropna(subset=['Datetime'], inplace=True)
 df1.reset_index(inplace=True, drop=True)
+
+
 df_old = df1[df1['race'] != 'NKS']
 df_new = df1[df1['race'] == 'NKS']
-
+df_old.reset_index(inplace=True, drop=True)
+df_new.reset_index(inplace=True, drop=True)
+"""
+for i in range(len(df1)):
+    df1.at[i, 'daytime'] = int(df1.at[i, 'Datetime'].hour)
+    if (df1.at[i, 'daytime'] >= 4) and (df1.at[i, 'daytime'] <= 21):
+        df1.at[i, 'type'] = 'day'
+    else:
+        df1.at[i, 'type'] = 'night'
+print(df1)
+df_day = df1[df1['type'] == 'day']
+df_night = df1[df1['type'] == 'night']
+df_day.reset_index(inplace=True, drop=True)
+df_night.reset_index(inplace=True, drop=True)
+"""
 # chose which features to include
-df1 = df1.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race'])
+# 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'
+#df1 = df1.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race'])
 
-df_old = df_old.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race'])
+#df_old = df_old.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race'])
+#df_new = df_new.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race'])
 
-df_new = df_new.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race'])
+#df_day = df_day.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race', 'daytime', 'type'])
+#df_night = df_night.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race', 'daytime', 'type'])
 
-#'Temp', 'angle', 'Altitude', 'n_lambs', 'age'
-#print(df1)
 
-#df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise.csv', delimiter=';', low_memory=False)
-#print(df2)
-#df2 = df2.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
-#print(df2.describe())
+df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise_new.csv', delimiter=';', low_memory=False)
+df2 = df2.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
+
+df3 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise_old.csv', delimiter=';', low_memory=False)
+df3 = df3.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
+
+df4 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise_early.csv', delimiter=';', low_memory=False)
+df4 = df4.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
+
+df5 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise_late.csv', delimiter=';', low_memory=False)
+df5 = df5.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
+
+df6 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise_day.csv', delimiter=';', low_memory=False)
+df6 = df6.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
+
+df7 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise_night.csv', delimiter=';', low_memory=False)
+df7 = df7.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
+
+
+print('new/heavy:')
+print(df2.describe())
+print('---------------------------------------------------------')
+print('old/light:')
+print(df3.describe())
+print('---------------------------------------------------------')
+print('early season:')
+print(df4.describe())
+print('---------------------------------------------------------')
+print('late season:')
+print(df5.describe())
+print('---------------------------------------------------------')
+print('day:')
+print(df6.describe())
+print('---------------------------------------------------------')
+print('night:')
+print(df7.describe())
+print('---------------------------------------------------------')
+
 
 
 def dbscan(df, epsilon, min, fig=False):
@@ -55,17 +106,16 @@ def dbscan(df, epsilon, min, fig=False):
         #fig.update_traces(marker=dict(size=5), selector=dict(mode='markers'))
 
         polar = df.groupby('cluster').mean().reset_index()
-
-        print(polar['Altitude'].describe(), polar['angle'].describe(), polar['Temp'].describe(), polar['Velocity'].describe())
-        print(polar['age'].describe(), polar['n_lambs'].describe(), polar['sin_time'].describe(), polar['cos_time'].describe())
-
+        #print(polar['Altitude'].describe(), polar['angle'].describe(), polar['Temp'].describe(), polar['Velocity'].describe())
+        #print(polar['age'].describe(), polar['n_lambs'].describe(), polar['sin_time'].describe(), polar['cos_time'].describe())
         polar1 = df.groupby('cluster').std().reset_index()
         polar = pd.melt(polar, id_vars=['cluster'])
         polar1 = pd.melt(polar1, id_vars=['cluster'])
+
         fig = px.line_polar(polar, r='value', theta='variable', color='cluster', line_close=True, height=800, width=1400)
         fig1 = px.line_polar(polar1, r='value', theta='variable', color='cluster', line_close=True, height=800, width=1400)
 
-        #fig.show()
+        fig.show()
         #fig1.show()
 
 
@@ -81,27 +131,37 @@ def epsPlot(df, n, r, fig=False):
     if fig:
         plt.figure(figsize=(12, 8))
         plt.plot(dist)
-        plt.title('Epsilon plot, all data', fontsize=35, pad=15)
+        plt.title('Epsilon plot, nighttime', fontsize=35, pad=15)
         plt.xlabel('Points in the dataset', fontsize=25, labelpad=15)
         plt.ylabel('Sorted {}-nearest neighbor distance'.format(n), fontsize=25, labelpad=15)
         plt.grid(True)
         plt.xticks(fontsize=20)
         plt.yticks(fontsize=20)
+        plt.ylim(-0.05, 1.9)
         plt.tight_layout()
-        #plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/01 Total/dbscan/epsplot_all.png", dpi=500)
+        #plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/01 Total/dbscan/dbscan_eps_night.png", dpi=500)
         plt.show()
 
 
-#df1 = Standardize(df1, ['Velocity', 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'])
-#df1 = Normalize(df1, ['Velocity', 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'], -1, 1)
+def runner(df):
+    print(df['Velocity'].describe())
+    df = Standardize(df, ['Velocity', 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'])
+    print('-----bruk denne først:-----')
+    print(df['Velocity'].describe())
+    df = Normalize(df, ['Velocity', 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'], -1, 1)
+    #k = 2 * df.shape[-1] - 1
+    #epsPlot(df, k, 1, True)
+    #dbscan(df, 0.37, 15, True)
 
-#k = 2 * df1.shape[-1] - 1
-#epsPlot(df1, k, 1, True)
-#dbscan(df1, 0.37, 16, True)
-#df_noise = df1[df1['cluster'] == -1]
-#df_noise = df_noise.drop(columns=['cluster'])
-#print(df_noise.describe())
-#df_noise.to_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise.csv', index=False, sep=';')
+    #df_noise = df[df['cluster'] == -1]
+    #df_noise = df_noise.drop(columns=['cluster'])
+    #print(df_noise['Velocity'].describe())
+    #df_noise.to_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise_day.csv', index=False, sep=';')
+
+
+#print(df3.describe())
+#runner(df_old)
+
 
 """
 print(len(df_noise[df_noise['Haversine'] < -0.894457]))
@@ -110,5 +170,6 @@ plt.hist(df_noise['Haversine'], bins=50)
 plt.axvline(x=-0.894457)
 plt.show()
 """
+
 
 
