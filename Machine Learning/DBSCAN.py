@@ -22,6 +22,7 @@ df_old = df1[df1['race'] != 'NKS']
 df_new = df1[df1['race'] == 'NKS']
 df_old.reset_index(inplace=True, drop=True)
 df_new.reset_index(inplace=True, drop=True)
+
 """
 for i in range(len(df1)):
     df1.at[i, 'daytime'] = int(df1.at[i, 'Datetime'].hour)
@@ -39,8 +40,8 @@ df_night.reset_index(inplace=True, drop=True)
 # 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'
 #df1 = df1.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race'])
 
-#df_old = df_old.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race'])
-#df_new = df_new.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race'])
+df_old = df_old.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race'])
+df_new = df_new.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race'])
 
 #df_day = df_day.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race', 'daytime', 'type'])
 #df_night = df_night.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race', 'daytime', 'type'])
@@ -64,7 +65,7 @@ df6 = df6.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
 df7 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise_night.csv', delimiter=';', low_memory=False)
 df7 = df7.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
 
-
+"""
 print('new/heavy:')
 print(df2.describe())
 print('---------------------------------------------------------')
@@ -83,7 +84,7 @@ print('---------------------------------------------------------')
 print('night:')
 print(df7.describe())
 print('---------------------------------------------------------')
-
+"""
 
 
 def dbscan(df, epsilon, min, fig=False):
@@ -146,7 +147,6 @@ def epsPlot(df, n, r, fig=False):
 def runner(df):
     print(df['Velocity'].describe())
     df = Standardize(df, ['Velocity', 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'])
-    print('-----bruk denne først:-----')
     print(df['Velocity'].describe())
     df = Normalize(df, ['Velocity', 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'], -1, 1)
     #k = 2 * df.shape[-1] - 1
@@ -159,8 +159,24 @@ def runner(df):
     #df_noise.to_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise_day.csv', index=False, sep=';')
 
 
+def Threshold(df_tot, df_noise, feature):
+    old_mean = np.mean(df_tot[feature])
+    old_std = df_tot[feature].std()
+    normalized = np.mean(df_noise[feature])
+    df_standardized = Standardize(df_tot, ['Velocity', 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'])
+    x_max = max(df_standardized[feature])
+    x_min = min(df_standardized[feature])
+
+    antinorm = ((normalized + 1) * (x_max - x_min)/2) + x_min
+    threshold = antinorm * old_std + old_mean
+
+    print(threshold)
+
+
+Threshold(df_new, df2, 'angle')
+
 #print(df3.describe())
-#runner(df_old)
+#runner(df_new)
 
 
 """
