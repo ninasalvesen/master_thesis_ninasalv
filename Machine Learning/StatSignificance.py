@@ -50,20 +50,36 @@ def StatisticalSignificance(df_one, df_two, feature):
 
 #StatisticalSignificance(df2, df3, 'Velocity')
 
-df_mother = df1[df1['uniq.log'] == '1803011758_2019']
-df_lamb = df1[df1['uniq.log'] == '1632004928_2019']
-#print(df_mother)
-#print(df_lamb)
+df_mother = pd.DataFrame(df1[df1['uniq.log'] == '1803011758_2019'])
+df_lamb = pd.DataFrame(df1[df1['uniq.log'] == '1632004928_2019'])
 
-# Plot of activity per date in Tingvoll
+#get one day instead for sow and lamb, to plot the angle
+"""
+df_mother.reset_index(inplace=True, drop=True)
+df_lamb.reset_index(inplace=True, drop=True)
+
+for i in range(len(df_mother)):
+    df_mother.at[i, 'hour'] = df_mother.at[i, 'Datetime'].hour
+df_mother['Datetime'] = pd.to_datetime(df_mother['Datetime'].dt.date.astype(str))
+df_mother = df_mother[df_mother['Datetime'] == '2019-07-20']
+
+for i in range(len(df_lamb)):
+    df_lamb.at[i, 'hour'] = df_lamb.at[i, 'Datetime'].hour
+df_lamb['Datetime'] = pd.to_datetime(df_lamb['Datetime'].dt.date.astype(str))
+df_lamb = df_lamb[df_lamb['Datetime'] == '2019-07-20']
+"""
+
+# Plot of features against threshold values
 fig1, ax1 = plt.subplots(figsize=(16, 8))
-sns.lineplot(data=df_mother, x='Datetime', y='Temp', label='Mother', lw=2, color='orange')
-sns.lineplot(data=df_lamb, x='Datetime', y='Temp', label='Lamb', color='steelblue', lw=2)
-plt.axhline(y=20, label='All data threshold', color='firebrick', lw=3)
+sns.lineplot(data=df_mother, x='Datetime', y='Altitude', label='Mother', lw=3, color='orange')
+sns.lineplot(data=df_lamb, x='Datetime', y='Altitude', label='Lamb', color='steelblue', lw=3)
+plt.axhline(y=365, label='All data threshold', color='firebrick', lw=3)
 #plt.axhline(y=313, label='Heavier breed treshold', color='lightcoral', lw=3)
 ax1.set_xlabel(' ', fontsize=1)
-ax1.set_ylabel('Temperature, degrees Celsius', fontsize=35, labelpad=30)
-ax1.set_title('Temperature, with threshold value', fontsize=40, pad=30)
+ax1.set_ylabel('Altitude, mamsl', fontsize=35, labelpad=30)
+ax1.set_title('Altitude of mother sow & lamb, with threshold value', fontsize=40, pad=30)
+#labels = ['00:00', '06:00', '12:00', '18:00']
+#plt.xticks(fontsize=25, ticks=[0, 6, 12, 18], labels=labels)
 plt.xticks(fontsize=25)
 plt.yticks(fontsize=25)
 date_form = DateFormatter("%d.%m")
@@ -71,8 +87,8 @@ ax1.xaxis.set_major_formatter(date_form)
 plt.legend()
 ax1.legend(loc='upper left', frameon=True, prop={'size': 20})
 plt.tight_layout()
-#plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/01 Total/mother_temp.png", dpi=500)
+#plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/01 Total/mother_angle.png", dpi=500)
 
-plt.show()
+#plt.show()
 
 
