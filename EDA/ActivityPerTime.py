@@ -367,7 +367,4 @@ plt.tight_layout()
 
 plt.show()
 
-#print(df1['Haversine'].describe())
-#print(df2['Haversine'].describe())
-
 
