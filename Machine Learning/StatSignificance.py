@@ -50,8 +50,12 @@ def StatisticalSignificance(df_one, df_two, feature):
 
 #StatisticalSignificance(df2, df3, 'Velocity')
 
-df_mother = pd.DataFrame(df1[df1['uniq.log'] == '1803011758_2019'])
-df_lamb = pd.DataFrame(df1[df1['uniq.log'] == '1632004928_2019'])
+# Find percentile of threshold values
+df_percentile = df1[df1['Altitude'] < 350]
+print((len(df_percentile)/len(df1))*100)
+
+df_mother = df1[df1['uniq.log'] == '1803011758_2019']
+df_lamb = df1[df1['uniq.log'] == '1632004928_2019']
 
 #get one day instead for sow and lamb, to plot the angle
 """
@@ -73,7 +77,7 @@ df_lamb = df_lamb[df_lamb['Datetime'] == '2019-07-20']
 fig1, ax1 = plt.subplots(figsize=(16, 8))
 sns.lineplot(data=df_mother, x='Datetime', y='Altitude', label='Mother', lw=3, color='orange')
 sns.lineplot(data=df_lamb, x='Datetime', y='Altitude', label='Lamb', color='steelblue', lw=3)
-plt.axhline(y=365, label='All data threshold', color='firebrick', lw=3)
+plt.axhline(y=350, label='All data threshold', color='firebrick', lw=3)
 #plt.axhline(y=313, label='Heavier breed treshold', color='lightcoral', lw=3)
 ax1.set_xlabel(' ', fontsize=1)
 ax1.set_ylabel('Altitude, mamsl', fontsize=35, labelpad=30)
@@ -85,10 +89,10 @@ plt.yticks(fontsize=25)
 date_form = DateFormatter("%d.%m")
 ax1.xaxis.set_major_formatter(date_form)
 plt.legend()
-ax1.legend(loc='upper left', frameon=True, prop={'size': 20})
+ax1.legend(loc='lower right', frameon=True, prop={'size': 20})
 plt.tight_layout()
-#plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/01 Total/mother_angle.png", dpi=500)
+#plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/01 Total/mother_altitude.png", dpi=500)
 
-#plt.show()
+plt.show()
 
 
