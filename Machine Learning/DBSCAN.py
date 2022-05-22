@@ -12,40 +12,51 @@ df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endeli
 
 df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
-
 # removing empty rows at the beginning of each set
 df1.dropna(subset=['Datetime'], inplace=True)
 df1.reset_index(inplace=True, drop=True)
 
-
+# initiating new sets from data splits on race, season and daytime
+"""
+# race
 df_old = df1[df1['race'] != 'NKS']
 df_new = df1[df1['race'] == 'NKS']
 df_old.reset_index(inplace=True, drop=True)
 df_new.reset_index(inplace=True, drop=True)
 
-"""
+# daytime
 for i in range(len(df1)):
     df1.at[i, 'daytime'] = int(df1.at[i, 'Datetime'].hour)
     if (df1.at[i, 'daytime'] >= 4) and (df1.at[i, 'daytime'] <= 21):
         df1.at[i, 'type'] = 'day'
     else:
         df1.at[i, 'type'] = 'night'
-print(df1)
 df_day = df1[df1['type'] == 'day']
 df_night = df1[df1['type'] == 'night']
 df_day.reset_index(inplace=True, drop=True)
 df_night.reset_index(inplace=True, drop=True)
-"""
+
+# season
+for i in range(len(df1)):
+    df1.at[i, 'month'] = int(df1.at[i, 'Datetime'].month)
+df_early = df1[df1['month'] < 7]
+df_late = df1[df1['month'] >= 7]
+df_early.reset_index(inplace=True, drop=True)
+df_late.reset_index(inplace=True, drop=True)
+
+
 # chose which features to include
 # 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'
-#df1 = df1.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race'])
+df1 = df1.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race'])
 
 df_old = df_old.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race'])
 df_new = df_new.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race'])
 
-#df_day = df_day.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race', 'daytime', 'type'])
-#df_night = df_night.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race', 'daytime', 'type'])
+df_day = df_day.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race', 'daytime', 'type'])
+df_night = df_night.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race', 'daytime', 'type'])
 
+df_early = df_early.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race', 'month'])
+df_late = df_late.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race', 'month'])
 
 df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise_new.csv', delimiter=';', low_memory=False)
 df2 = df2.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
@@ -65,7 +76,10 @@ df6 = df6.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
 df7 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise_night.csv', delimiter=';', low_memory=False)
 df7 = df7.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
 
-"""
+df8 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise.csv', delimiter=';', low_memory=False)
+df8 = df8.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
+
+# print statistical information
 print('new/heavy:')
 print(df2.describe())
 print('---------------------------------------------------------')
@@ -173,10 +187,8 @@ def Threshold(df_tot, df_noise, feature):
     print(threshold)
 
 
-Threshold(df_new, df2, 'angle')
-
-#print(df3.describe())
 #runner(df_new)
+#Threshold(df1, df8, 'angle')
 
 
 """

@@ -1,6 +1,10 @@
 import pandas as pd
 import numpy as np
 
+df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/Total.csv',
+                 delimiter=';', low_memory=False)
+
+df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
 df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise_new.csv', delimiter=';', low_memory=False)
 df2 = df2.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
@@ -38,9 +42,6 @@ def StatisticalSignificance(df_one, df_two, feature):
         print('False, cannot reject H0')
 
 
-
-#print(df6.describe())
-#print(df7.describe())
 #StatisticalSignificance(df2, df3, 'Velocity')
 
 
