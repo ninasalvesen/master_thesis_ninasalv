@@ -100,4 +100,5 @@ Implementation of the Kmeans machine learning clustering algorithm.
 ### StatSignificance.py ###
 Calculating the statistical significance of threshold vakues with two-sample one-tailed student t-testing, finding the percentiles, and plotting the dynamic features against the computed threshold value.
 
-
+## Project thesis ##
+Project report for the preparational work for the master thesis.
