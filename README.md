@@ -1,7 +1,7 @@
 # Statistical analysis of the movement pattern of sheep and the occurrence of predators #
 ## Master thesis for Nina Salvesen ##
 
-This is the git repository for the master thesis for Nina Salvesen, in the field of applied physics and computer science at the Norwegian University of Science and Technology. The goal of the study is to find the normal and thus abnormal behavior of different Norwegian sheep breeds on outfield pastures, with the use of data driven analysis, statistics and machine learning. All code files are described below.
+This is the git repository for the master thesis for Nina Salvesen, in the field of applied physics and computer science at the Norwegian University of Science and Technology. The goal of the study is to find the normal and thus abnormal behavior of different Norwegian sheep breeds on outfield pastures, with the use of data driven analysis, statistics and machine learning. Threshold values for the dynamic features indicating abnormal behavior were found. All code files are described below.
 
 The retrieved data is from two different areas in Norway, for different herds of sheep. The two areas are Fosen in Trøndelag, and Tingvoll in Møre og Romsdal.
 
@@ -96,5 +96,8 @@ Implementation of the DBSCAN machine learning clustering algorithm.
 
 ### Kmeans.py ###
 Implementation of the Kmeans machine learning clustering algorithm.
+
+### StatSignificance.py ###
+Calculating the statistical significance of threshold vakues with two-sample one-tailed student t-testing, finding the percentiles, and plotting the dynamic features against the computed threshold value.
 
 
