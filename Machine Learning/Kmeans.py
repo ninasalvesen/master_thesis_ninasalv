@@ -8,6 +8,7 @@ from matplotlib import pyplot as plt
 import seaborn as sns
 
 sns.set_style('darkgrid')
+pd.set_option('display.max_columns', None)
 
 df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/Total.csv',
                  delimiter=';', low_memory=False)
@@ -87,9 +88,10 @@ def Kmeans(df, n_clusters):
     #fig.update_traces(marker=dict(size=5, line=dict(width=1, color='white')), selector=dict(mode='markers'))
     #fig.update_layout(title='Kmeans++ for lighter sheep breeds')
 
+    #print(df.groupby('cluster').describe().loc[:, (slice(None), ['mean', 'std'])])
     polar = df.groupby('cluster').mean().reset_index()
-    print(polar['Altitude'].describe(), polar['angle'].describe(), polar['Temp'].describe(), polar['Velocity'].describe())
-    print(polar['age'].describe(), polar['n_lambs'].describe(), polar['sin_time'].describe(), polar['cos_time'].describe())
+    #print(polar['Altitude'].describe(), polar['angle'].describe(), polar['Temp'].describe(), polar['Velocity'].describe())
+    #print(polar['age'].describe(), polar['n_lambs'].describe(), polar['sin_time'].describe(), polar['cos_time'].describe())
     polar1 = df.groupby('cluster').std().reset_index()
     polar = pd.melt(polar, id_vars=['cluster'])
     polar1 = pd.melt(polar1, id_vars=['cluster'])
@@ -175,4 +177,6 @@ def KmeansPCA(df_reduced, n_clusters, fig=False):
 
 
 #print(len(df1['uniq.log'].unique()))
+
+
 

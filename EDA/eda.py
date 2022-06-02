@@ -31,7 +31,6 @@ plt.show()
 
 plt.figure()
 sns.pairplot(df1, diag_kind='hist')
-corr = df1.corr()
 plt.tight_layout()
 #plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/01 Total/pairplot.png", dpi=500)
 plt.show()

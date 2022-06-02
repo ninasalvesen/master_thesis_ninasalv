@@ -15,9 +15,9 @@ df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
 # removing empty rows at the beginning of each set
 df1.dropna(subset=['Datetime'], inplace=True)
 df1.reset_index(inplace=True, drop=True)
-
-# initiating new sets from data splits on race, season and daytime
 """
+# initiating new sets from data splits on race, season and daytime
+
 # race
 df_old = df1[df1['race'] != 'NKS']
 df_new = df1[df1['race'] == 'NKS']
@@ -43,12 +43,12 @@ df_early = df1[df1['month'] < 7]
 df_late = df1[df1['month'] >= 7]
 df_early.reset_index(inplace=True, drop=True)
 df_late.reset_index(inplace=True, drop=True)
-
+"""
 
 # chose which features to include
 # 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'
 df1 = df1.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race'])
-
+"""
 df_old = df_old.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race'])
 df_new = df_new.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race'])
 
@@ -60,7 +60,7 @@ df_late = df_late.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log'
 
 df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise_new.csv', delimiter=';', low_memory=False)
 df2 = df2.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
-
+"
 df3 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise_old.csv', delimiter=';', low_memory=False)
 df3 = df3.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
 
@@ -75,10 +75,10 @@ df6 = df6.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
 
 df7 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise_night.csv', delimiter=';', low_memory=False)
 df7 = df7.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
-
+"""
 df8 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise.csv', delimiter=';', low_memory=False)
 df8 = df8.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
-
+"""
 # print statistical information
 print('new/heavy:')
 print(df2.describe())
@@ -159,9 +159,9 @@ def epsPlot(df, n, r, fig=False):
 
 
 def runner(df):
-    print(df['Velocity'].describe())
+    #print(df['Velocity'].describe())
     df = Standardize(df, ['Velocity', 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'])
-    print(df['Velocity'].describe())
+    #print(df['Velocity'].describe())
     df = Normalize(df, ['Velocity', 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'], -1, 1)
     #k = 2 * df.shape[-1] - 1
     #epsPlot(df, k, 1, True)
@@ -177,27 +177,32 @@ def Threshold(df_tot, df_noise, feature):
     old_mean = np.mean(df_tot[feature])
     old_std = df_tot[feature].std()
     normalized = np.mean(df_noise[feature])
+    standard = -1 + df_noise[feature].std()
+    # find the interquartile range to measure the variability
+    # iqr is a better measure for this than std for skewed data
+    q3, q1 = np.percentile(df_noise[feature], [75, 25])
+    iqr = -1 + q3 - q1
+    print(normalized, iqr)
+
     df_standardized = Standardize(df_tot, ['Velocity', 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'])
     x_max = max(df_standardized[feature])
     x_min = min(df_standardized[feature])
 
     antinorm = ((normalized + 1) * (x_max - x_min)/2) + x_min
+    anti_iqr = ((iqr + 1) * (x_max - x_min)/2) + x_min
+    antistd = ((standard + 1) * (x_max - x_min)/2) + x_min
     threshold = antinorm * old_std + old_mean
+    # real value iqr becomes the pluss/minus variability about the mean
+    pm = anti_iqr * old_std + old_mean
+    stand = antistd * old_std + old_mean
 
-    print(threshold)
+    print(threshold, pm, stand)
 
 
-#runner(df_new)
-#Threshold(df1, df8, 'angle')
+#runner(df1)
+Threshold(df1, df8, 'Temp')
 
 
-"""
-print(len(df_noise[df_noise['Haversine'] < -0.894457]))
-plt.figure()
-plt.hist(df_noise['Haversine'], bins=50)
-plt.axvline(x=-0.894457)
-plt.show()
-"""
 
 
 
