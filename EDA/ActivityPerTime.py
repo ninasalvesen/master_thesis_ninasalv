@@ -4,12 +4,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib.dates import DateFormatter
 
-sns.set_style('darkgrid')
 """
-df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V4 after cut 2.0.csv',
+sns.set_style('darkgrid')
+
+df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V3 med Haversine.csv',
                   delimiter=';', dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
 df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
-
 print(df1)
 
 df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V5 after cut 2.0.csv',
@@ -27,11 +27,12 @@ df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%d/%m/%Y %H:%M')
 df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V6 after cut 4.0.csv',
                   delimiter=';')
 df2['Datetime'] = pd.to_datetime(df2['Datetime'], format='%d/%m/%Y %H:%M')
-"""
-df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/Total.csv',
+
+df3 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/Total.csv',
                   delimiter=';', dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
-df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
-df1.rename(columns={'Velocity':'Haversine'}, inplace=True)
+df3['Datetime'] = pd.to_datetime(df3['Datetime'], format='%Y-%m-%d %H:%M:%S')
+df3.rename(columns={'Velocity':'Haversine'}, inplace=True)
+"""
 
 
 def FindExtremeDates(df):

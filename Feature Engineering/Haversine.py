@@ -3,12 +3,12 @@ import numpy as np
 
 # both check the haversine, and impute values where needed, and add distance per hour as a feature
 
-df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V4 after cut 2.0.csv', delimiter=';',
+df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V2 med timeclean.csv', delimiter=';',
                   dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
 
-df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
+df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%d/%m/%Y %H:%M')
 #df1['Haversine'] = 0
-
+""" 
 df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V5 after cut 2.0.csv',
                   delimiter=';')
 df2['Datetime'] = pd.to_datetime(df2['Datetime'], format='%Y-%m-%d %H:%M:%S')
@@ -16,7 +16,7 @@ df2['Datetime'] = pd.to_datetime(df2['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
 print(df1.head())
 print(df2.head())
-
+"""
 
 def haversine(lat0, long0, lat1, long1):
     R = 6371000
@@ -105,7 +105,8 @@ def dist_check(df, dist_max):  # imputes average points where the distance is to
     return df
 
 
-#df1 = insert_speed(df1)
+df1 = insert_speed(df1)
+print(df1.describe())
 #df1 = dist_check(df1, 15000)
 #df1 = insert_speed(df1)  # update velocity as final check
 
@@ -115,3 +116,4 @@ def dist_check(df, dist_max):  # imputes average points where the distance is to
 
 #df1.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V4 after cut 2.0.csv', index=False, sep=';')
 #df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V5 after cut 2.0.csv', index=False, sep=';')
+
