@@ -5,7 +5,7 @@ This is the git repository for the master thesis for Nina Salvesen, in the field
 
 The retrieved data is from two different areas in Norway, for different herds of sheep. The two areas are Fosen in Trøndelag, and Tingvoll in Møre og Romsdal.
 
-## DataCleaning ##
+## Data Cleaning ##
 The total files used for data wrangling, that is cleaning and transforming all the raw data into a useful format.
 
 ### FosenDelete.py ###
@@ -47,7 +47,7 @@ The retrieved data came with extraneous information not useful for the data scie
 ### ActivityPerTime.py ###
 Uses the feature of velocity per hour (Haversine) to display the activity of the sheep per year, date and hour. Also make box plots to show statistical information on the activity per hour.
 
-### eda.py ###
+### Eda.py ###
 Plots correlation plots between features in the form of a heatmap and a scatter pairplot matrix.
 
 ### InfoGenerationFosen.py ###
@@ -69,7 +69,7 @@ Checks the size of each sheep data set and plot the results.
 Plots the start and end dates in Fosen and Tingvoll before alteration, so this information can be used to decide what threshold dates to set.
 
 
-## FeatureEngineering ##
+## Feature Engineering ##
 
 ### Altitude.py ###
 Retrieves the altitude value for each latitude, longitude-pair in the data, by the use of API-calls to Kartverket and multithreading.
@@ -89,7 +89,7 @@ Transform the datetime-feature into a sine-cosine pair to represent time as a fe
 ### WeatherFeature.py ###
 External data on the temperature in Fosen and Tingvoll were collected from GeoNorge, and implemented as a feature for each point.
 
-## MachineLearning ##
+## Machine Learning ##
 
 ### DBSCAN.py ###
 Implementation of the DBSCAN machine learning clustering algorithm.
