@@ -1,4 +1,4 @@
-# Digital threshold markers of atypical sheep movement on outfield pastures by the use of the machine learning models k-means and DBSCAN #
+# Digital threshold markers of atypical sheep movement on rangeland pastures by the use of the machine learning models k-means and DBSCAN #
 ## Master thesis for Nina Salvesen ##
 
 This is the git repository for the master thesis for Nina Salvesen, in the field of applied physics and computer science at the Norwegian University of Science and Technology. The goal of the study is to find the normal and thus abnormal behavior of different Norwegian sheep breeds on outfield pastures, with the use of data driven analysis, statistics and machine learning. Threshold values for the dynamic features indicating abnormal behavior were found. All code files are described below.
