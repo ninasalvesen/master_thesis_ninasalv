@@ -170,13 +170,8 @@ def KmeansPCA(df_reduced, n_clusters, fig=False):
     plt.show()
 
 
-#df1 = Standardize(df1, ['Velocity', 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'])
-#df1 = Normalize(df1, ['Velocity', 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'], -1, 1)
-#ElbowMethod(df1, True)  # k=4
-#Kmeans(df1, 4)
-
-
-#print(len(df1['uniq.log'].unique()))
-
-
+df1 = Standardize(df1, ['Velocity', 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'])
+df1 = Normalize(df1, ['Velocity', 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'], -1, 1)
+ElbowMethod(df1, True)  # k=4
+Kmeans(df1, 4)
 

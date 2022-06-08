@@ -102,10 +102,8 @@ def TingvollGenerate(df, df_ext, df_info):
         i += 1
 
 
-#FosenGenerate(df2, df4, df6)
-#print(df2)
-#df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V11 info_features.csv', index=False, sep=';')
+FosenGenerate(df2, df4, df6)
+df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V11 info_features.csv', index=False, sep=';')
 
-#TingvollGenerate(df1, df3, df5)
-#print(df1)
-#df1.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V7 info_features.csv', index=False, sep=';')
+TingvollGenerate(df1, df3, df5)
+df1.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V7 info_features.csv', index=False, sep=';')

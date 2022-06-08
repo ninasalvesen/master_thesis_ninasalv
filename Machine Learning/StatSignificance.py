@@ -31,13 +31,12 @@ df7 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endeli
 df7 = df7.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
 
 
-def StatisticalSignificance(df_one, df_two, feature):
-    t_crit = 1.645
+def StatisticalSignificance_ttest(df_one, df_two, feature):
+    t_crit = 1.96
     print('len 1:', len(df_one[feature]))
     print('len 2:', len(df_two[feature]))
 
     SE = np.sqrt( (df_one[feature].std()**2) / len(df_one[feature]) + (df_two[feature].std()**2) / len(df_two[feature]) )
-    print('standard error: ', SE)
 
     t_test =  np.abs( (np.mean(df_one[feature]) - np.mean(df_two[feature])) / SE)
 
@@ -48,7 +47,7 @@ def StatisticalSignificance(df_one, df_two, feature):
         print('False, cannot reject H0')
 
 
-#StatisticalSignificance(df2, df3, 'Velocity')
+StatisticalSignificance_ttest(df2, df3, 'Temp')
 
 # Find percentile of threshold values
 df_percentile = df1[df1['Altitude'] < 350]
@@ -57,8 +56,8 @@ print((len(df_percentile)/len(df1))*100)
 df_mother = df1[df1['uniq.log'] == '1803011758_2019']
 df_lamb = df1[df1['uniq.log'] == '1632004928_2019']
 
-#get one day instead for sow and lamb, to plot the angle
-"""
+# get one day instead for sow and lamb, to plot the angle
+
 df_mother.reset_index(inplace=True, drop=True)
 df_lamb.reset_index(inplace=True, drop=True)
 
@@ -71,7 +70,7 @@ for i in range(len(df_lamb)):
     df_lamb.at[i, 'hour'] = df_lamb.at[i, 'Datetime'].hour
 df_lamb['Datetime'] = pd.to_datetime(df_lamb['Datetime'].dt.date.astype(str))
 df_lamb = df_lamb[df_lamb['Datetime'] == '2019-07-20']
-"""
+
 
 # Plot of features against threshold values
 fig1, ax1 = plt.subplots(figsize=(16, 8))

@@ -106,14 +106,13 @@ def dist_check(df, dist_max):  # imputes average points where the distance is to
 
 
 df1 = insert_speed(df1)
-print(df1.describe())
-#df1 = dist_check(df1, 15000)
-#df1 = insert_speed(df1)  # update velocity as final check
+df1 = dist_check(df1, 15000)
+df1 = insert_speed(df1)  # update velocity as final check
 
-#df2 = insert_speed(df2)
-#df2 = dist_check(df2, 15000)
-#df2 = insert_speed(df2)  # update velocity as final check
+df2 = insert_speed(df2)
+df2 = dist_check(df2, 15000)
+df2 = insert_speed(df2)  # update velocity as final check
 
-#df1.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V4 after cut 2.0.csv', index=False, sep=';')
-#df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V5 after cut 2.0.csv', index=False, sep=';')
+df1.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V4 after cut 2.0.csv', index=False, sep=';')
+df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V5 after cut 2.0.csv', index=False, sep=';')
 

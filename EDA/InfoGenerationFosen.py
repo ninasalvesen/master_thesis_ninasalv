@@ -78,7 +78,7 @@ while i < len(df3):
 print(count_true)
 print(count_false)
 
-#df3.to_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Informasjon datasett Fosen after cut 6.0.csv', index=False, sep=';')
+df3.to_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Informasjon datasett Fosen after cut 6.0.csv', index=False, sep=';')
 
 
 

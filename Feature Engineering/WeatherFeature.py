@@ -79,12 +79,12 @@ def ImputeTemp(df):
     return df
 
 
-#df3 = initTime(df3)
-#temp1 = GetTemp(df1, df3)
-#temp1 = ImputeTemp(temp1)
-#temp1.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V9 med temp.csv', index=False, sep=';')
+df3 = initTime(df3)
+temp1 = GetTemp(df1, df3)
+temp1 = ImputeTemp(temp1)
+temp1.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V9 med temp.csv', index=False, sep=';')
 
-#df4 = initTime(df4)
-#temp2 = GetTemp(df2, df4)
-#temp2 = ImputeTemp(temp2)
-#temp2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V10 med temp.csv', index=False, sep=';')
+df4 = initTime(df4)
+temp2 = GetTemp(df2, df4)
+temp2 = ImputeTemp(temp2)
+temp2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V10 med temp.csv', index=False, sep=';')

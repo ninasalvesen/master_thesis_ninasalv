@@ -1,5 +1,5 @@
 import pandas as pd
-from FeatureEngineering import Haversine
+#from FeatureEngineering import Haversine
 
 df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V7 info_features.csv',
                  delimiter=';', low_memory=False)
@@ -36,8 +36,8 @@ df_reduced = TimeReduce(df1)
 
 # update the Haversine
 df_reduced['Haversine'] = 0
-df_reduced = Haversine.insert_speed(df_reduced)
-df_reduced = Haversine.dist_check(df_reduced, 15000)
-df_reduced = Haversine.insert_speed(df_reduced)
+#df_reduced = Haversine.insert_speed(df_reduced)
+#df_reduced = Haversine.dist_check(df_reduced, 15000)
+#df_reduced = Haversine.insert_speed(df_reduced)
 
 df_reduced.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V8 reduced.csv', index=False, sep=';')

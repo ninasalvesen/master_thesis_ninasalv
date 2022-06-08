@@ -35,11 +35,11 @@ def TrigTime(df):
     return df
 
 
-#df1 = TrigTime(df1)
-#df2 = TrigTime(df2)
+df1 = TrigTime(df1)
+df2 = TrigTime(df2)
 
-#df1.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V6 sinetime.csv', index=False, sep=';')
-#df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V7 sinetime.csv', index=False, sep=';')
+df1.to_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V6 sinetime.csv', index=False, sep=';')
+df2.to_csv('/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V7 sinetime.csv', index=False, sep=';')
 
 
 fig1, ax1 = plt.subplots(figsize=(16, 8))

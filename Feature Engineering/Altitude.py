@@ -5,22 +5,22 @@ from threading import Thread, Lock
 import time
 from FeatureEngineering import Haversine, Angle
 
-#lock = Lock()
+lock = Lock()
 
-#time0 = time.time()
+time0 = time.time()
 
-#df1 = pd.read_csv("/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V10 altitude test.csv", delimiter=';',
-#                 dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
+df1 = pd.read_csv("/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V10 altitude test.csv", delimiter=';',
+                 dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
 
-#df2 = pd.read_csv("/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V9 info_features med temp.csv", delimiter=';',
-#                 dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
+df2 = pd.read_csv("/Users/ninasalvesen/Documents/Sauedata/Fosen_Telespor/Samlet data Fosen V9 info_features med temp.csv", delimiter=';',
+                 dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
 
 #df2['Altitude'] = None
 
-#inter = int((len(df2)) / 2)
-#df_del1 = df2.iloc[0:inter, :]
-#df_del2 = df2.iloc[inter:len(df2), :]
-#df_del2.reset_index(inplace=True, drop=True)
+inter = int((len(df2)) / 2)
+df_del1 = df2.iloc[0:inter, :]
+df_del2 = df2.iloc[inter:len(df2), :]
+df_del2.reset_index(inplace=True, drop=True)
 
 
 def Elevation(lat, long):
@@ -93,13 +93,13 @@ def runner(df):
     return dftot
 
 
-#df_del1tot = runner(df_del1)
-#df_del1tot.to_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Samlet data Fosen med temp del 1.csv', index=False, sep=';')
-#print('the program 1 took ', time.time() - time0, 'seconds')
+df_del1tot = runner(df_del1)
+df_del1tot.to_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Samlet data Fosen med temp del 1.csv', index=False, sep=';')
+print('the program 1 took ', time.time() - time0, 'seconds')
 
-#df_del2tot = runner(df_del2)
-#df_del2tot.to_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Samlet data Fosen med temp del 2.csv', index=False, sep=';')
-#print('the program 2 took ', time.time() - time0, 'seconds')
+df_del2tot = runner(df_del2)
+df_del2tot.to_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Samlet data Fosen med temp del 2.csv', index=False, sep=';')
+print('the program 2 took ', time.time() - time0, 'seconds')
 
 
 def CheckWrongAltitudes(df):
@@ -129,6 +129,6 @@ df_test = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/En
 df_test['Datetime'] = pd.to_datetime(df_test['Datetime'], format='%Y-%m-%d %H:%M:%S')
 
 dfny = CheckWrongAltitudes(df_test)
-#dfny.to_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Samlet data begge test.csv', index=False, sep=';')
+dfny.to_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Samlet data begge.csv', index=False, sep=';')
 
 

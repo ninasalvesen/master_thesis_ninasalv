@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib.dates import DateFormatter
 
-"""
+
 sns.set_style('darkgrid')
 
 df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Tingvoll data/Samlet data Tingvoll V3 med Haversine.csv',
@@ -32,7 +32,7 @@ df3 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endeli
                   delimiter=';', dtype={"Initial start": "str", "Start": "str", "Stop": "str"})
 df3['Datetime'] = pd.to_datetime(df3['Datetime'], format='%Y-%m-%d %H:%M:%S')
 df3.rename(columns={'Velocity':'Haversine'}, inplace=True)
-"""
+
 
 
 def FindExtremeDates(df):
@@ -151,7 +151,6 @@ def ActivityPerHourBoxPlot(df):
     return hours
 
 
-"""
 dates1, activity1 = DateActivity(df1)
 dates2, activity2 = DateActivity(df2)
 
@@ -364,7 +363,7 @@ plt.yticks(fontsize=20)
 ax16.set(ylim=(-10, 1000))
 plt.tight_layout()
 #plt.savefig("/Users/ninasalvesen/Documents/Sauedata/Bilder/Master/01 Total/activity_violinplot.png", dpi=500)
-"""
+
 
 plt.show()
 

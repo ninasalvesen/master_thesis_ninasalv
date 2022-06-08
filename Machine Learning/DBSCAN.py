@@ -5,6 +5,7 @@ from matplotlib import pyplot as plt
 from sklearn.cluster import DBSCAN
 from sklearn.neighbors import NearestNeighbors
 from Kmeans import Standardize, Normalize
+import statistics
 import seaborn as sns
 
 df1 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/Total.csv',
@@ -15,7 +16,7 @@ df1['Datetime'] = pd.to_datetime(df1['Datetime'], format='%Y-%m-%d %H:%M:%S')
 # removing empty rows at the beginning of each set
 df1.dropna(subset=['Datetime'], inplace=True)
 df1.reset_index(inplace=True, drop=True)
-"""
+
 # initiating new sets from data splits on race, season and daytime
 
 # race
@@ -43,8 +44,8 @@ df_early = df1[df1['month'] < 7]
 df_late = df1[df1['month'] >= 7]
 df_early.reset_index(inplace=True, drop=True)
 df_late.reset_index(inplace=True, drop=True)
-"""
 
+"""
 # chose which features to include
 # 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'
 df1 = df1.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log', 'besetning', 'race'])
@@ -60,7 +61,7 @@ df_late = df_late.drop(columns=['Lat', 'Lon', 'Datetime', 'Data set', 'uniq.log'
 
 df2 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise_new.csv', delimiter=';', low_memory=False)
 df2 = df2.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
-"
+
 df3 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise_old.csv', delimiter=';', low_memory=False)
 df3 = df3.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
 
@@ -75,10 +76,10 @@ df6 = df6.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
 
 df7 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise_night.csv', delimiter=';', low_memory=False)
 df7 = df7.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
-"""
+
 df8 = pd.read_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise.csv', delimiter=';', low_memory=False)
 df8 = df8.drop(columns=['sin_time', 'cos_time', 'age', 'n_lambs'])
-"""
+
 # print statistical information
 print('new/heavy:')
 print(df2.describe())
@@ -98,7 +99,6 @@ print('---------------------------------------------------------')
 print('night:')
 print(df7.describe())
 print('---------------------------------------------------------')
-"""
 
 
 def dbscan(df, epsilon, min, fig=False):
@@ -116,7 +116,6 @@ def dbscan(df, epsilon, min, fig=False):
     print('Estimated no. of clusters: %d' % no_clusters)
     print('Estimated no. of noise points: %d' % no_noise)
     if fig:
-        #df['Temp'] = df['Temp'] + 1
         #fig = px.scatter_3d(df, x='sin_time', y='cos_time', z='Velocity', color='cluster', opacity=1)
         #fig.update_traces(marker=dict(size=5), selector=dict(mode='markers'))
 
@@ -159,18 +158,18 @@ def epsPlot(df, n, r, fig=False):
 
 
 def runner(df):
-    #print(df['Velocity'].describe())
+    print(df['Velocity'].describe())
     df = Standardize(df, ['Velocity', 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'])
-    #print(df['Velocity'].describe())
+    print(df['Velocity'].describe())
     df = Normalize(df, ['Velocity', 'Temp', 'angle', 'Altitude', 'n_lambs', 'age'], -1, 1)
-    #k = 2 * df.shape[-1] - 1
-    #epsPlot(df, k, 1, True)
-    #dbscan(df, 0.37, 15, True)
+    k = 2 * df.shape[-1] - 1
+    epsPlot(df, k, 1, True)
+    dbscan(df, 0.37, 15, True)
 
-    #df_noise = df[df['cluster'] == -1]
-    #df_noise = df_noise.drop(columns=['cluster'])
-    #print(df_noise['Velocity'].describe())
-    #df_noise.to_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise_day.csv', index=False, sep=';')
+    df_noise = df[df['cluster'] == -1]
+    df_noise = df_noise.drop(columns=['cluster'])
+    print(df_noise['Velocity'].describe())
+    df_noise.to_csv('/Users/ninasalvesen/Documents/Sauedata/Datasett_ferdig/Endelig/noise_day.csv', index=False, sep=';')
 
 
 def Threshold(df_tot, df_noise, feature):
@@ -199,10 +198,6 @@ def Threshold(df_tot, df_noise, feature):
     print(threshold, pm, stand)
 
 
-#runner(df1)
+runner(df1)
 Threshold(df1, df8, 'Temp')
-
-
-
-
 
