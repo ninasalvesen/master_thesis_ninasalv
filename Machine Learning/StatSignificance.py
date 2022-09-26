@@ -56,7 +56,7 @@ print((len(df_percentile)/len(df1))*100)
 df_mother = df1[df1['uniq.log'] == '1803011758_2019']
 df_lamb = df1[df1['uniq.log'] == '1632004928_2019']
 
-# get one day instead for sow and lamb, to plot the angle
+# get one day instead for ewe and lamb, to plot the angle
 
 df_mother.reset_index(inplace=True, drop=True)
 df_lamb.reset_index(inplace=True, drop=True)
