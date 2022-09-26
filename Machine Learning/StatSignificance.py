@@ -80,7 +80,7 @@ plt.axhline(y=350, label='All data threshold', color='firebrick', lw=3)
 #plt.axhline(y=313, label='Heavier breed treshold', color='lightcoral', lw=3)
 ax1.set_xlabel(' ', fontsize=1)
 ax1.set_ylabel('Altitude, mamsl', fontsize=35, labelpad=30)
-ax1.set_title('Altitude of mother sow & lamb, with threshold value', fontsize=40, pad=30)
+ax1.set_title('Altitude of mother ewe & lamb, with threshold value', fontsize=40, pad=30)
 #labels = ['00:00', '06:00', '12:00', '18:00']
 #plt.xticks(fontsize=25, ticks=[0, 6, 12, 18], labels=labels)
 plt.xticks(fontsize=25)
